@@ -7,7 +7,7 @@ Simple `.erb` loader for use with Webpack in a Ruby on Rails project. Files are 
 Install from npm
 
 ```bash
-$ npm install @usability-hub/erb-loader --save-dev
+$ npm install uh-erb-loader --save-dev
 ```
 
 ## Example Webpack config
@@ -17,7 +17,7 @@ $ npm install @usability-hub/erb-loader --save-dev
 
 module.exports = {
   preLoaders: [
-    { test: /.erb$/, loader: '@usability-hub/erb-loader' },
+    { test: /.erb$/, loader: 'uh-erb-loader' },
   ]
 };
 ```
