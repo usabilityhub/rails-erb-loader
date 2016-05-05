@@ -1,5 +1,5 @@
 {
-  "name": "erb-loader",
+  "name": "@usability-hub/erb-loader",
   "version": "1.0.0",
   "description": "Embedded Ruby (erb) loader for Webpack",
   "main": "index.js",
