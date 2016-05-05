@@ -17,7 +17,7 @@ $ npm install uh-erb-loader --save-dev
 
 module.exports = {
   preLoaders: [
-    { test: /.erb$/, loader: 'uh-erb-loader' },
+    { test: /\.erb$/, loader: 'uh-erb-loader' },
   ]
 };
 ```
