@@ -7,7 +7,7 @@ Simple `.erb` loader for use with Webpack in a Ruby on Rails project. Files are 
 
 module.exports = {
   preLoaders: [
-    { test: /.erb$/, loader: 'erb-loader' },
+    { test: /.erb$/, loader: '@usability-hub/erb-loader' },
   ]
 };
 ```
