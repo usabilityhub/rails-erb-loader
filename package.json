@@ -1,0 +1,26 @@
+{
+  "name": "erb-loader",
+  "version": "1.0.0",
+  "description": "Embedded Ruby (erb) loader for Webpack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/usabilityhub/erb-loader.git"
+  },
+  "keywords": [
+    "erb",
+    "loader",
+    "webpack",
+    "ruby",
+    "rails"
+  ],
+  "author": "UsabilityHub",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/usabilityhub/erb-loader/issues"
+  },
+  "homepage": "https://github.com/usabilityhub/erb-loader#readme"
+}
