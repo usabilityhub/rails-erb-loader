@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/usabilityhub/erb-loader/issues"
   },
-  "homepage": "https://github.com/usabilityhub/erb-loader#readme"
+  "homepage": "https://github.com/usabilityhub/erb-loader#readme",
+  "dependencies": {
+    "node-uuid": "^1.4.7"
+  }
 }
