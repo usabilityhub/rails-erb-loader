@@ -31,15 +31,29 @@ module.exports = {
 
 ## Configuration
 
+### Query parameters
+
 Can be configured with [query parameters](https://webpack.github.io/docs/using-loaders.html#query-parameters):
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
-| `cacheable` | `false` | Should this file be cached? If `false` files will recompiled on every build. Files that have [configuration comments](#dependencies) will always be cached. |
+| `cacheable` | `false` | If `false`, then files are rebuilt every time WebPack rebuilds. If `true`, files will only be rebuilt when they or their dependencies are modified. |
+| `dependencies` | `[]` | A list of Ruby files to watch for changes. |
 | `dependenciesRoot` | `"app"` | The root of your Rails project, relative to Webpack's working directory. |
-| `parseComments` | `true` | Search files for configuration comments before compiling. |
+| `parseComments` | `true` | Search files for [configuration comments](#configuration-comments) before compiling. |
 
-## Dependencies
+### Configuration comments
+
+#### `uh-erb-loader-cacheable`
+
+Override `cacheable` config for just this file.
+
+```js
+/* uh-erb-loader-cacheable true */
+export const VALUE = <%= 5 %>
+```
+
+#### `uh-erb-loader-dependencies`
 
 Building many `.erb` files can be slow. It is best to be avoided when unnecessary. You can speed up rebuild by whitelisting dependencies from your Rails project.
 

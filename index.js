@@ -4,6 +4,10 @@ var uuid = require('node-uuid')
 var loaderUtils = require('loader-utils')
 var defaults = require('lodash.defaults')
 
+function pushAll (dest, src) {
+  Array.prototype.push.apply(dest, src)
+}
+
 /* Match any block comments that start with the string `uh-erb-loader-*`. */
 var configCommentRegex = /\/\*\s*uh-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
 
@@ -15,29 +19,56 @@ function defaultFileExtension (dependency) {
   return fileExtensionRegex.test(dependency) ? dependency : dependency + '.rb'
 }
 
-/* Get a list of all dependencies listed in `dependencies` comments. */
-function getDependencies (source, root) {
+function parseBool (string) {
+  switch (string) {
+    case '': return true
+    case 'true': return true
+    case 'false': return false
+  }
+  throw new TypeError('Expected either "true" or "false", got "' + string + '".')
+}
+
+// Get each space separated path, ignoring any empty strings.
+function parseDependencies (root, string) {
+  return string.split(/\s+/).reduce((accumulator, dependency) => {
+    if (dependency.length > 0) {
+      var absolutePath = path.resolve(root, defaultFileExtension(dependency))
+      accumulator.push(absolutePath)
+    }
+    return accumulator
+  }, [])
+}
+
+/* Update config object in place with comments from file */
+function parseComments (source, config) {
   var match = null
-  var dependencies = []
   while ((match = configCommentRegex.exec(source))) {
     var option = match[1]
     var value = match[2]
-    if (option === 'dependency' || option === 'dependencies') {
-      // Get each space separated path, ignoring any empty strings.
-      value.split(/\s+/).forEach(function (dependency) {
-        if (dependency.length > 0) {
-          var absolutePath = path.resolve(root, defaultFileExtension(dependency))
-          dependencies.push(absolutePath)
+    switch (option) {
+      case 'dependency':
+      case 'dependencies':
+        var dependencies = parseDependencies(config.dependenciesRoot, value)
+        pushAll(config.dependencies, dependencies)
+        break
+      case 'cacheable':
+        try {
+          config.cacheable = parseBool(value)
+        } catch (e) {
+          console.warn('WARNING: `uh-erb-loader-cacheable`: ' + e.message)
         }
-      })
-    } else {
-      console.warn(
-        'WARNING: Unrecognized configuration command ' +
-        '"uh-erb-loader-' + option + '". Comment ignored.'
-      )
+        break
+      case 'dependencies-root':
+        config.dependenciesRoot = value
+        break
+      default:
+        console.warn(
+          'WARNING: Unrecognized configuration command ' +
+          '"uh-erb-loader-' + option + '". Comment ignored.'
+        )
     }
   }
-  return dependencies
+  return config
 }
 
 /* Launch Rails in a child process and run the `erb_transformer.rb` script to
@@ -66,27 +97,36 @@ module.exports = function uhErbLoader (source, map) {
   // Get options passed in the loader query, or use defaults.
   var config = defaults(loaderUtils.getLoaderConfig(loader, 'uhErbLoader'), {
     cacheable: false,
+    dependencies: [],
     dependenciesRoot: 'app',
     parseComments: true
   })
 
-  // If `parseComments` is enabled then search the files for dependency
-  // commands.
-  var dependencies = config.parseComments
-    ? getDependencies(source, config.dependenciesRoot)
-    : []
+  // loader-utils does not support parsing arrays, so we might have to do it
+  // ourselves.
+  if (typeof config.dependencies === 'string') {
+    config.dependencies = parseDependencies(
+      config.dependenciesRoot,
+      config.dependencies
+    )
+  }
 
-  if (dependencies.length > 0) {
-    // Automatically enable caching if any dependencies are found, and register
-    // them all with Webpack...
-    loader.cacheable()
-    dependencies.forEach(function (dependency) {
-      loader.addDependency(dependency)
-    })
-  } else if (config.cacheable) {
-    // ...Otherwise use the default `cacheable` setting.
+  // Update `config` object in place with any parsed comments.
+  if (config.parseComments) {
+    parseComments(source, config)
+  }
+
+  // Mark file as cacheable - it will not be rebuilt until it or any of its
+  // dependencies are changed.
+  if (config.cacheable) {
     loader.cacheable()
   }
+
+  // Register watchers for any dependencies.
+  config.dependencies.forEach(function (dependency) {
+    loader.addDependency(dependency)
+  })
+
   // Now actually transform the source.
   var callback = loader.async()
   transformSource(source, map, callback)
