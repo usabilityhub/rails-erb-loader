@@ -4,11 +4,8 @@ var uuid = require('node-uuid')
 var loaderUtils = require('loader-utils')
 var defaults = require('lodash.defaults')
 
-/* Match any block comments that start with the string `uh-erb-loader-dependency` or
- * `uh-erb-loader-dependencies`. The rest of the comment should be a list of paths
- * to Ruby files within the project structure.
- */
-var dependenciesRegex = /(?:\/\*\s*uh-erb-loader-dependenc(?:y|ies))\s*([\s\S]*?)(?:\s*\*\/)/g
+/* Match any block comments that start with the string `uh-erb-loader-*`. */
+var configCommentRegex = /\/\*\s*uh-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
 
 /* Match any path ending with a file extension */
 var fileExtensionRegex = /\.\w*$/
@@ -22,14 +19,23 @@ function defaultFileExtension (dependency) {
 function getDependencies (source, root) {
   var match = null
   var dependencies = []
-  while ((match = dependenciesRegex.exec(source))) {
-    // Get each space separated path, ignoring any empty strings.
-    match[1].split(/\s+/).forEach(function (simpleDependency) {
-      if (simpleDependency.length > 0) {
-        var dependency = path.resolve(root, defaultFileExtension(simpleDependency))
-        dependencies.push(dependency)
-      }
-    })
+  while ((match = configCommentRegex.exec(source))) {
+    var option = match[1]
+    var value = match[2]
+    if (option === 'dependency' || option === 'dependencies') {
+      // Get each space separated path, ignoring any empty strings.
+      value.split(/\s+/).forEach(function (dependency) {
+        if (dependency.length > 0) {
+          var absolutePath = path.resolve(root, defaultFileExtension(dependency))
+          dependencies.push(absolutePath)
+        }
+      })
+    } else {
+      console.warn(
+        'WARNING: Unrecognized configuration command ' +
+        '"uh-erb-loader-' + option + '". Comment ignored.'
+      )
+    }
   }
   return dependencies
 }
