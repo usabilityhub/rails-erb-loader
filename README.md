@@ -44,6 +44,8 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 
 ### Configuration comments
 
+`uh-erb-loader` will parse files for overrides to query parameters. These must be `/* ... */` style block comments starting with the correct `uh-erb-loader-*` command. This comment syntax is supported in JavaScript, CSS, SASS and less.
+
 #### `uh-erb-loader-cacheable`
 
 Override `cacheable` config for just this file.
