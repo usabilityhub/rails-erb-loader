@@ -96,7 +96,7 @@ module.exports = function uhErbLoader (source, map) {
 
   // Get options passed in the loader query, or use defaults.
   var config = defaults(loaderUtils.getLoaderConfig(loader, 'uhErbLoader'), {
-    cacheable: false,
+    cacheable: true,
     dependencies: [],
     dependenciesRoot: 'app',
     parseComments: true

@@ -37,7 +37,7 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
-| `cacheable` | `false` | If `false`, then files are rebuilt every time WebPack rebuilds. If `true`, files will only be rebuilt when they or their dependencies are modified. |
+| `cacheable` | `true` | If `false`, then files are rebuilt every time WebPack rebuilds. If `true`, files will only be rebuilt when they or their dependencies are modified. |
 | `dependencies` | `[]` | A list of Ruby files to watch for changes. |
 | `dependenciesRoot` | `"app"` | The root of your Rails project, relative to Webpack's working directory. |
 | `parseComments` | `true` | Search files for [configuration comments](#configuration-comments) before compiling. |
