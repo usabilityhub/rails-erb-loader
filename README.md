@@ -7,6 +7,15 @@
 
 Compiles Embedded Ruby template files in a Rails project. Files are piped through the `ERB` gem via a call to `rails runner`.
 
+## Table of Contents
+- [Install](#install)
+- [Usage](#usage)
+- [Configuration](#configuration)
+  - [Query parameters](#query-parameters)
+  - [Configuration comments](#configuration-comments)
+- [Contribute](#contribute)
+- [License](#license)
+
 ## Install
 
 Install from npm
