@@ -68,7 +68,6 @@ function parseComments (source, config) {
         )
     }
   }
-  return config
 }
 
 /* Launch Rails in a child process and run the `erb_transformer.rb` script to
