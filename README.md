@@ -1,4 +1,4 @@
-# uh-erb-loader
+# rails-erb-loader
 
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
@@ -21,19 +21,19 @@ Compiles Embedded Ruby template files in a Rails project. Files are piped throug
 Install from npm
 
 ```console
-$ npm install uh-erb-loader --save-dev
+$ npm install rails-erb-loader --save-dev
 ```
 
 ## Usage
 
-Add `uh-erb-loader` to your preloaders.
+Add `rails-erb-loader` to your preloaders.
 
 ```js
 // webpack.config.js
 
 module.exports = {
   preLoaders: [
-    { test: /\.erb$/, loader: 'uh-erb-loader' },
+    { test: /\.erb$/, loader: 'rails-erb-loader' },
   ]
 };
 ```
@@ -53,18 +53,18 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 
 ### Configuration comments
 
-`uh-erb-loader` will parse files for overrides to query parameters. These must be `/* ... */` style block comments starting with the correct `uh-erb-loader-*` command. This comment syntax is supported in JavaScript, CSS, SASS and less.
+`rails-erb-loader` will parse files for overrides to query parameters. These must be `/* ... */` style block comments starting with the correct `rails-erb-loader-*` command. This comment syntax is supported in JavaScript, CSS, SASS and less.
 
-#### `uh-erb-loader-cacheable`
+#### `rails-erb-loader-cacheable`
 
 Override `cacheable` config for just this file.
 
 ```js
-/* uh-erb-loader-cacheable true */
+/* rails-erb-loader-cacheable true */
 export const VALUE = <%= 5 %>
 ```
 
-#### `uh-erb-loader-dependencies`
+#### `rails-erb-loader-dependencies`
 
 Building many `.erb` files can be slow. It is best to be avoided when unnecessary. You can speed up rebuild by whitelisting dependencies from your Rails project.
 
@@ -73,7 +73,7 @@ For example, consider the following React component that reads data from the `Us
 ```erb
 // app/assets/javascripts/UserFormFields.js
 
-/* uh-erb-loader-dependencies models/user models/image */
+/* rails-erb-loader-dependencies models/user models/image */
 
 export default function UserFormFields() {
   return (
@@ -103,11 +103,11 @@ export default function UserFormFields() {
 }
 ```
 
-Inclusion of the `uh-erb-loader-dependency` (or `-dependencies`) comment will tell Webpack to cache the file until any of the listed dependencies are modified.
+Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell Webpack to cache the file until any of the listed dependencies are modified.
 
 ## Contribute
 
-Questions, bug reports and pull requests welcome. See [GitHub issues](https://github.com/usabilityhub/uh-erb-loader/issues).
+Questions, bug reports and pull requests welcome. See [GitHub issues](https://github.com/usabilityhub/rails-erb-loader/issues).
 
 ## License
 

@@ -8,8 +8,8 @@ function pushAll (dest, src) {
   Array.prototype.push.apply(dest, src)
 }
 
-/* Match any block comments that start with the string `uh-erb-loader-*`. */
-var configCommentRegex = /\/\*\s*uh-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
+/* Match any block comments that start with the string `rails-erb-loader-*`. */
+var configCommentRegex = /\/\*\s*rails-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
 
 /* Match any path ending with a file extension */
 var fileExtensionRegex = /\.\w*$/
@@ -55,7 +55,7 @@ function parseComments (source, config) {
         try {
           config.cacheable = parseBool(value)
         } catch (e) {
-          console.warn('WARNING: `uh-erb-loader-cacheable`: ' + e.message)
+          console.warn('WARNING: `rails-erb-loader-cacheable`: ' + e.message)
         }
         break
       case 'dependencies-root':
@@ -64,7 +64,7 @@ function parseComments (source, config) {
       default:
         console.warn(
           'WARNING: Unrecognized configuration command ' +
-          '"uh-erb-loader-' + option + '". Comment ignored.'
+          '"rails-erb-loader-' + option + '". Comment ignored.'
         )
     }
   }
@@ -90,11 +90,11 @@ function transformSource (source, map, callback) {
   child.stdin.end()
 }
 
-module.exports = function uhErbLoader (source, map) {
+module.exports = function railsErbLoader (source, map) {
   var loader = this
 
   // Get options passed in the loader query, or use defaults.
-  var config = defaults(loaderUtils.getLoaderConfig(loader, 'uhErbLoader'), {
+  var config = defaults(loaderUtils.getLoaderConfig(loader, 'railsErbLoader'), {
     cacheable: true,
     dependencies: [],
     dependenciesRoot: 'app',
