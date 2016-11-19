@@ -5,7 +5,7 @@
 
 > Embedded Ruby (`.erb`) Webpack loader for Ruby on Rails projects.
 
-Compiles Embedded Ruby template files in a Rails project. Files are piped through the `ERB` gem via a call to `rails runner`.
+Compiles Embedded Ruby template files in a Rails project. Files are piped through the `Erubis` gem via a call to `rails runner`.
 
 ## Table of Contents
 - [Install](#install)
