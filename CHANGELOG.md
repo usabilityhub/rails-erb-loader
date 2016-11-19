@@ -1,5 +1,8 @@
 # Change Log
 
+## [3.0.0] - 2016-11-19
+- **Breaking** Use `Erubis` instead of `ERB` gem to render templates. This gem is bundled by default with Rails 3.0 and above. - #7
+
 ## [2.0.0] - 2016-11-07
 - **Breaking** Rename project from `uh-erb-loader` to `rails-erb-loader` - #6
 - **Breaking** Add file caching by default - #4
