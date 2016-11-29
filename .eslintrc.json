@@ -2,5 +2,8 @@
   "extends": "standard",
   "parserOptions": {
     "ecmaVersion": 5
+  },
+  "env": {
+    "es6": false
   }
 }
