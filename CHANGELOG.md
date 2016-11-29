@@ -1,5 +1,10 @@
 # Change Log
 
+## [3.0.1] - 2016-11-30
+- Ensure support back to Node 0.10.0 - #13, #17
+- Remove dependency `node-uuid` - #15
+- Include MIT license text
+
 ## [3.0.0] - 2016-11-19
 - **Breaking** Use `Erubis` instead of `ERB` gem to render templates. This gem is bundled by default with Rails 3.0 and above. - #7
 
