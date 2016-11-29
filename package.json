@@ -3,6 +3,9 @@
   "version": "3.0.0",
   "description": "Embedded Ruby (`.erb`) Webpack loader for Ruby on Rails projects.",
   "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
   "scripts": {
     "lint": "eslint index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -29,8 +32,9 @@
     "lodash.defaults": "^4.2.0"
   },
   "devDependencies": {
-    "eslint": "^3.9.1",
+    "eslint": "^3.11.1",
     "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-node": "^3.0.4",
     "eslint-plugin-promise": "^3.3.0",
     "eslint-plugin-standard": "^2.0.1"
   }
