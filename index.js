@@ -30,7 +30,7 @@ function parseBool (string) {
 
 // Get each space separated path, ignoring any empty strings.
 function parseDependencies (root, string) {
-  return string.split(/\s+/).reduce((accumulator, dependency) => {
+  return string.split(/\s+/).reduce(function(accumulator, dependency) {
     if (dependency.length > 0) {
       var absolutePath = path.resolve(root, defaultFileExtension(dependency))
       accumulator.push(absolutePath)
