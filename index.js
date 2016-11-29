@@ -1,12 +1,16 @@
 var exec = require('child_process').exec
 var path = require('path')
-var uuid = require('node-uuid')
 var loaderUtils = require('loader-utils')
 var defaults = require('lodash.defaults')
 
 function pushAll (dest, src) {
   Array.prototype.push.apply(dest, src)
 }
+
+/* Create a delimeter that is unlikely to appear in parsed code. I've split this
+ * string deliberately in case this file accidentally ends up being transpiled
+ */
+var ioDelimiter = '_' + '_RAILS_ERB_LOADER_DELIMETER__'
 
 /* Match any block comments that start with the string `rails-erb-loader-*`. */
 var configCommentRegex = /\/\*\s*rails-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
@@ -74,7 +78,6 @@ function parseComments (source, config) {
  * output transformed source.
  */
 function transformSource (source, map, callback) {
-  var ioDelimiter = uuid.v4()
   var child = exec(
     './bin/rails runner ' + path.join(__dirname, 'erb_transformer.rb') + ' ' + ioDelimiter,
     function (error, stdout) {
