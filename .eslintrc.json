@@ -1,9 +1,10 @@
 {
   "extends": "standard",
+  "plugins": ["node"],
   "parserOptions": {
-    "ecmaVersion": 5
+    "ecmaVersion": 2017
   },
-  "env": {
-    "es6": false
+  "rules": {
+    "node/no-unsupported-features": ["error", { "ignores": ["blockScopedFunctions"] }]
   }
 }
