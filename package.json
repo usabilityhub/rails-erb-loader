@@ -21,7 +21,12 @@
     "ruby",
     "rails"
   ],
-  "author": "UsabilityHub",
+  "author": "Rhys van der Waerden <rhys.vdw@gmail.com> (https://github.com/rhys-vdw)",
+  "contributors": [
+    "Guillermo Iguaran <guilleiguaran@gmail.com> (https://github.com/guilleiguaran)",
+    "Jonathan Lehman (https://github.com/jdlehman)",
+    "Maria Kousta (https://github.com/mkousta)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/usabilityhub/rails-erb-loader/issues"
