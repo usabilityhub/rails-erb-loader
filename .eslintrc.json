@@ -5,6 +5,6 @@
     "ecmaVersion": 2017
   },
   "rules": {
-    "node/no-unsupported-features": ["error", { "ignores": ["blockScopedFunctions"] }]
+    "node/no-unsupported-features": "error"
   }
 }
