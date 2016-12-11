@@ -1,6 +1,6 @@
 # Change Log
 
-## [3.0.2] - 2016-12-10
+## [NEXT] - TBA
 - Added `rails` option
 
 ## [3.0.1] - 2016-11-30

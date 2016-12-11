@@ -1,6 +1,6 @@
 {
   "name": "rails-erb-loader",
-  "version": "3.0.2",
+  "version": "3.0.1",
   "description": "Embedded Ruby (`.erb`) Webpack loader for Ruby on Rails projects.",
   "main": "index.js",
   "engines": {
