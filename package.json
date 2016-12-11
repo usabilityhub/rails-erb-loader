@@ -35,7 +35,8 @@
   "homepage": "https://github.com/usabilityhub/rails-erb-loader#readme",
   "dependencies": {
     "loader-utils": "^0.2.16",
-    "lodash.defaults": "^4.2.0"
+    "lodash.defaults": "^4.2.0",
+    "lodash.assign": "^4.2.0"
   },
   "devDependencies": {
     "eslint": "^3.11.1",
