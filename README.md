@@ -4,7 +4,7 @@
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-> Embedded Ruby (`.erb`) Webpack loader for Ruby on Rails projects.
+> Embedded Ruby (`.erb`) `webpack` loader for Ruby on Rails projects.
 
 Compiles Embedded Ruby template files in a Rails project. Files are piped through the `Erubis` gem via a call to `rails runner`.
 
@@ -47,13 +47,13 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
-| `cacheable` | `true` | If `false`, then files are rebuilt every time WebPack rebuilds. If `true`, files will only be rebuilt when they or their dependencies are modified. |
+| `cacheable` | `true` | If `false`, then files are rebuilt every time `webpack` rebuilds. If `true`, files will only be rebuilt when they or their dependencies are modified. |
 | `dependencies` | `[]` | A list of Ruby files to watch for changes. |
-| `dependenciesRoot` | `"app"` | The root of your Rails project, relative to Webpack's working directory. |
+| `dependenciesRoot` | `"app"` | The root of your Rails project, relative to `webpack`'s working directory. |
 | `parseComments` | `true` | Search files for [configuration comments](#configuration-comments) before compiling. |
 | `rails` | `./bin/rails` | Path to rails binary. |
 
-These options may also be specified directly in your Webpack config. For example, if your Webpack process is running in a subdirectory of your Rails project:
+These options may also be specified directly in your `webpack` config. For example, if your `webpack` process is running in a subdirectory of your Rails project:
 
 ```js
 module.exports = {
@@ -80,7 +80,7 @@ export const JS_BUILD_TIME = <%= DateTime.now.to_formatted_s(:iso8601) %>
 
 #### `rails-erb-loader-dependencies`
 
-If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Webpack will watch these dependencies and rebuild when they are changed.
+If your `.erb` files depend on files in your Ruby project, you can list them explicitly. `webpack` will watch these dependencies and rebuild when they are changed.
 
 Here is an example React component that depends on the `User` and `Image` Rails models:
 
@@ -117,7 +117,7 @@ export default function UserFormFields() {
 }
 ```
 
-Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell Webpack to cache the file until any of the listed dependencies are modified.
+Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell `webpack` to cache the file until any of the listed dependencies are modified.
 
 ## Contribute
 
