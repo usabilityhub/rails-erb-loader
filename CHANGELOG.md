@@ -1,7 +1,7 @@
 # Change Log
 
-## [NEXT] - TBA
-- Added `rails` option
+## [3.1.0] - 2016-12-11
+- Added `rails` option - #20
 
 ## [3.0.1] - 2016-11-30
 - Ensure support back to Node 0.10.0 - #13, #17
