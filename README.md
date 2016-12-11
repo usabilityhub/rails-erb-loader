@@ -51,7 +51,7 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 | `dependencies` | `[]` | A list of Ruby files to watch for changes. |
 | `dependenciesRoot` | `"app"` | The root of your Rails project, relative to `webpack`'s working directory. |
 | `parseComments` | `true` | Search files for [configuration comments](#configuration-comments) before compiling. |
-| `rails` | `./bin/rails` | Path to rails binary. |
+| `rails` | `"./bin/rails"` | Path to rails binary. |
 
 These options may also be specified directly in your `webpack` config. For example, if your `webpack` process is running in a subdirectory of your Rails project:
 
