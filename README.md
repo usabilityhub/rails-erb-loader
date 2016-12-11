@@ -92,20 +92,21 @@ Here is an example React component that depends on the `User` and `Image` Rails 
 export default function UserFormFields() {
   return (
     <div>
-      <label>Avatar</label>
-      <ImageField maxSize={<%= Image::MAX_SIZE %>} />
+      <label htmlFor='avatar'>
+        Avatar
+      </label>
+      <ImageField id='avatar' maxSize={<%= Image::MAX_SIZE %>} />
+      <label htmlFor='name'>
+        Name
+      </label>
       <input
         id='name'
         type='text'
         maxLength={<%= User::MAX_NAME_LENGTH %>}
       />
-      <label htmlFor='name'>Name</label>
-      <input
-        id='name'
-        type='text'
-        maxLength={<%= User::MAX_NAME_LENGTH %>}
-      />
-      <label htmlFor='age'>Age</label>
+      <label htmlFor='age'>
+        Age
+      </label>
       <input
         id='age'
         type='number'
