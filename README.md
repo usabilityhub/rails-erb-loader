@@ -51,14 +51,15 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 | `dependencies` | `[]` | A list of Ruby files to watch for changes. |
 | `dependenciesRoot` | `"app"` | The root of your Rails project, relative to `webpack`'s working directory. |
 | `parseComments` | `true` | Search files for [configuration comments](#configuration-comments) before compiling. |
-| `rails` | `"./bin/rails"` | Path to rails binary. |
+| `runner` | `"./bin/rails runner"` | Path to runner binary, relative to `webpack`'s working directory. |
+| `engine` | `"erubis"` | ERB Template engine, `"erubis"` and `"erb"` are supported right now. |
 
 These options may also be specified directly in your `webpack` config. For example, if your `webpack` process is running in a subdirectory of your Rails project:
 
 ```js
 module.exports = {
   railsErbLoader: {
-    rails: '../bin/rails',
+    runner: '../bin/rails runner',
     dependenciesRoot: '../app',
   },
   // ...
