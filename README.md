@@ -74,15 +74,15 @@ module.exports = {
 Override `cacheable` config for just this file.
 
 ```js
-/* rails-erb-loader-cacheable true */
-export const VALUE = <%= 5 %>
+/* rails-erb-loader-cacheable false */
+export const JS_BUILD_TIME = <%= DateTime.now.to_formatted_s(:iso8601) %>
 ```
 
 #### `rails-erb-loader-dependencies`
 
-Building many `.erb` files can be slow. It is best to be avoided when unnecessary. You can speed up rebuild by whitelisting dependencies from your Rails project.
+If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Webpack will watch these dependencies and rebuild when they are changed.
 
-For example, consider the following React component that reads data from the `User` and `Image` Ruby classes:
+Here is an example React component that depends on the `User` and `Image` Rails models:
 
 ```erb
 // app/assets/javascripts/UserFormFields.js
