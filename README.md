@@ -53,6 +53,18 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 | `parseComments` | `true` | Search files for [configuration comments](#configuration-comments) before compiling. |
 | `rails` | `./bin/rails` | Path to rails binary. |
 
+These options may also be specified directly in your Webpack config. For example, if your Webpack process is running in a subdirectory of your Rails project:
+
+```js
+module.exports = {
+  railsErbLoader: {
+    rails: '../bin/rails',
+    dependenciesRoot: '../app',
+  },
+  // ...
+}
+```
+
 ### Configuration comments
 
 `rails-erb-loader` will parse files for overrides to query parameters. These must be `/* ... */` style block comments starting with the correct `rails-erb-loader-*` command. This comment syntax is supported in JavaScript, CSS, SASS and less.

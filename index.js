@@ -2,7 +2,6 @@ var exec = require('child_process').exec
 var path = require('path')
 var loaderUtils = require('loader-utils')
 var defaults = require('lodash.defaults')
-var qs = require('querystring')
 
 function pushAll (dest, src) {
   Array.prototype.push.apply(dest, src)
@@ -78,13 +77,9 @@ function parseComments (source, config) {
 /* Launch Rails in a child process and run the `erb_transformer.rb` script to
  * output transformed source.
  */
-function transformSource (queryString, source, map, callback) {
-
-  var query       = qs.parse(queryString.substring(1) || '');
-  var railsBinary = query.rails || './bin/rails';
-
+function transformSource (rails, source, map, callback) {
   var child = exec(
-    railsBinary + ' runner ' + path.join(__dirname, 'erb_transformer.rb') + ' ' + ioDelimiter,
+    rails + ' runner ' + path.join(__dirname, 'erb_transformer.rb') + ' ' + ioDelimiter,
     function (error, stdout) {
       // Output is delimited to filter out unwanted warnings or other output
       // that we don't want in our files.
@@ -106,7 +101,8 @@ module.exports = function railsErbLoader (source, map) {
     cacheable: true,
     dependencies: [],
     dependenciesRoot: 'app',
-    parseComments: true
+    parseComments: true,
+    rails: './bin/rails'
   })
 
   // loader-utils does not support parsing arrays, so we might have to do it
@@ -136,5 +132,5 @@ module.exports = function railsErbLoader (source, map) {
 
   // Now actually transform the source.
   var callback = loader.async()
-  transformSource(this.query, source, map, callback)
+  transformSource(config.rails, source, map, callback)
 }
