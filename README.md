@@ -80,7 +80,7 @@ export const JS_BUILD_TIME = <%= DateTime.now.to_formatted_s(:iso8601) %>
 
 #### `rails-erb-loader-dependencies`
 
-If your `.erb` files depend on files in your Ruby project, you can list them explicitly. `webpack` will watch these dependencies and rebuild when they are changed.
+If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell `webpack` to watch these files and rebuild when they are changed.
 
 Here is an example React component that depends on the `User` and `Image` Rails models:
 
@@ -117,8 +117,6 @@ export default function UserFormFields() {
   )
 }
 ```
-
-Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell `webpack` to cache the file until any of the listed dependencies are modified.
 
 ## Contribute
 
