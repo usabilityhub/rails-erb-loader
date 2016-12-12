@@ -1,5 +1,10 @@
 # Change Log
 
+## [3.2.0] - 2016-12-12
+- Add `engine` config option to specify templating engine. - #21
+- Add `runner` config option to specify Ruby executable. - #21
+- Deprecate `rails` config option in preference for more flexible `runner`
+
 ## [3.1.0] - 2016-12-11
 - Added `rails` option - #20
 
