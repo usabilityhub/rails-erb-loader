@@ -4,9 +4,9 @@
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-> Embedded Ruby (`.erb`) `webpack` loader for Ruby on Rails projects.
+> Embedded Ruby (`.erb`) `webpack` loader for Ruby projects.
 
-Compiles Embedded Ruby template files in a Rails project. Files are piped through the `Erubis` gem via a call to `rails runner`.
+Compiles Embedded Ruby template files in any Ruby project. Files are built using either the `Erubis` or `ERB` gem.
 
 ## Table of Contents
 - [Install](#install)
@@ -51,7 +51,7 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 | `dependencies` | `[]` | A list of Ruby files to watch for changes. |
 | `dependenciesRoot` | `"app"` | The root of your Rails project, relative to `webpack`'s working directory. |
 | `parseComments` | `true` | Search files for [configuration comments](#configuration-comments) before compiling. |
-| `runner` | `"./bin/rails runner"` | Path to runner binary, relative to `webpack`'s working directory. |
+| `runner` | `"./bin/rails runner"` | Command to run Ruby scripts, relative to `webpack`'s working directory. |
 | `engine` | `"erubis"` | ERB Template engine, `"erubis"` and `"erb"` are supported right now. |
 
 These options may also be specified directly in your `webpack` config. For example, if your `webpack` process is running in a subdirectory of your Rails project:
@@ -61,6 +61,18 @@ module.exports = {
   railsErbLoader: {
     runner: '../bin/rails runner',
     dependenciesRoot: '../app',
+  },
+  // ...
+}
+```
+
+Also supports building without Rails:
+
+```js
+module.exports = {
+  railsErbLoader: {
+    runner: 'ruby',
+    engine: 'erb'
   },
   // ...
 }
