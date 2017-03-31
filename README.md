@@ -47,7 +47,6 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
-| `cacheable` | `true` | If `false`, then files are rebuilt every time `webpack` rebuilds. If `true`, files will only be rebuilt when they or their dependencies are modified. |
 | `dependencies` | `[]` | A list of Ruby files to watch for changes. |
 | `dependenciesRoot` | `"app"` | The root of your Rails project, relative to `webpack`'s working directory. |
 | `engine` | `"erubis"` | ERB Template engine, `"erubis"` and `"erb"` are supported right now. |
@@ -81,15 +80,6 @@ module.exports = {
 ### Configuration comments
 
 `rails-erb-loader` will parse files for overrides to query parameters. These must be `/* ... */` style block comments starting with the correct `rails-erb-loader-*` command. This comment syntax is supported in JavaScript, CSS, SASS and less.
-
-#### `rails-erb-loader-cacheable`
-
-Override `cacheable` config for just this file.
-
-```js
-/* rails-erb-loader-cacheable false */
-export const JS_BUILD_TIME = <%= DateTime.now.to_formatted_s(:iso8601) %>
-```
 
 #### `rails-erb-loader-dependencies`
 
