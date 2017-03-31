@@ -1,6 +1,6 @@
 var exec = require('child_process').exec
 var path = require('path')
-var loaderUtils = require('loader-utils')
+var getOptions = require('loader-utils').getOptions
 var defaults = require('lodash.defaults')
 var util = require('util')
 
@@ -107,7 +107,8 @@ module.exports = function railsErbLoader (source, map) {
   loader.cacheable()
 
   // Get options passed in the loader query, or use defaults.
-  var config = defaults(loaderUtils.getLoaderConfig(loader, 'railsErbLoader'), {
+  // Modifying the return value of `getOptions` is not permitted.
+  var config = defaults({}, getOptions(loader), {
     dependencies: [],
     dependenciesRoot: 'app',
     parseComments: true,

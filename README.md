@@ -8,6 +8,8 @@
 
 Compiles Embedded Ruby template files in any Ruby project. Files are built using either the `Erubis` or `ERB` gem.
 
+**NOTE:** For compatibility with webpack 1, please use [version 3.2.0](https://github.com/usabilityhub/rails-erb-loader/tree/3.2.0).
+
 ## Table of Contents
 - [Install](#install)
 - [Usage](#usage)
@@ -33,9 +35,16 @@ Add `rails-erb-loader` to your preloaders.
 // webpack.config.js
 
 module.exports = {
-  preLoaders: [
-    { test: /\.erb$/, loader: 'rails-erb-loader' },
-  ]
+    module: {
+      rules: [
+        {
+          test: /\.erb$/,
+          enforce: 'pre',
+          loader: 'rails-erb-loader'
+        },
+      ]
+    }
+  }
 };
 ```
 
@@ -56,24 +65,26 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 These options may also be specified directly in your `webpack` config. For example, if your `webpack` process is running in a subdirectory of your Rails project:
 
 ```js
-module.exports = {
-  railsErbLoader: {
+{
+  test: /\.erb$/,
+  loader: 'rails-erb-loader',
+  options: {
     runner: '../bin/rails runner',
     dependenciesRoot: '../app',
-  },
-  // ...
+  }
 }
 ```
 
 Also supports building without Rails:
 
 ```js
-module.exports = {
-  railsErbLoader: {
+{
+  test: /\.erb$/,
+  loader: 'rails-erb-loader',
+  options: {
     runner: 'ruby',
     engine: 'erb'
-  },
-  // ...
+  }
 }
 ```
 
