@@ -24,15 +24,6 @@ function defaultFileExtension (dependency) {
   return fileExtensionRegex.test(dependency) ? dependency : dependency + '.rb'
 }
 
-function parseBool (string) {
-  switch (string) {
-    case '': return true
-    case 'true': return true
-    case 'false': return false
-  }
-  throw new TypeError('Expected either "true" or "false", got "' + string + '".')
-}
-
 /* Get each space separated path, ignoring any empty strings. */
 function parseDependencies (root, string) {
   return string.split(/\s+/).reduce(function (accumulator, dependency) {
@@ -55,13 +46,6 @@ function parseComments (source, config) {
       case 'dependencies':
         var dependencies = parseDependencies(config.dependenciesRoot, value)
         pushAll(config.dependencies, dependencies)
-        break
-      case 'cacheable':
-        try {
-          config.cacheable = parseBool(value)
-        } catch (e) {
-          console.warn('WARNING: `rails-erb-loader-cacheable`: ' + e.message)
-        }
         break
       case 'dependencies-root':
         config.dependenciesRoot = value
@@ -118,9 +102,12 @@ var deprecatedSetRailsRunner = util.deprecate(setRailsRunner,
 module.exports = function railsErbLoader (source, map) {
   var loader = this
 
+  // Mark loader cacheable. Must be called explicitly in webpack 1.
+  // see: https://webpack.js.org/guides/migrating/#cacheable
+  loader.cacheable()
+
   // Get options passed in the loader query, or use defaults.
   var config = defaults(loaderUtils.getLoaderConfig(loader, 'railsErbLoader'), {
-    cacheable: true,
     dependencies: [],
     dependenciesRoot: 'app',
     parseComments: true,
@@ -145,12 +132,6 @@ module.exports = function railsErbLoader (source, map) {
   // Update `config` object in place with any parsed comments.
   if (config.parseComments) {
     parseComments(source, config)
-  }
-
-  // Mark file as cacheable - it will not be rebuilt until it or any of its
-  // dependencies are changed.
-  if (config.cacheable) {
-    loader.cacheable()
   }
 
   // Register watchers for any dependencies.
