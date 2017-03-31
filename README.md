@@ -14,8 +14,8 @@ Compiles Embedded Ruby template files in any Ruby project. Files are built using
 - [Install](#install)
 - [Usage](#usage)
 - [Configuration](#configuration)
-  - [Query parameters](#query-parameters)
-  - [Configuration comments](#configuration-comments)
+  - [Options](#options)
+  - [Dependencies](#dependencies)
 - [Contribute](#contribute)
 - [License](#license)
 
@@ -85,21 +85,20 @@ export default function UserFormFields() {
 
 ## Configuration
 
-### Query parameters
+### Options
 
-Can be configured with [query parameters](https://webpack.github.io/docs/using-loaders.html#query-parameters):
+Can be configured with [UseEntry#options](https://webpack.js.org/configuration/module/#useentry).
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
 | `dependenciesRoot` | `"app"` | The root of your Rails project, relative to `webpack`'s working directory. |
-| `engine` | `"erubis"` | ERB Template engine, `"erubis"` and `"erb"` are supported right now. |
+| `engine` | `"erubis"` | ERB Template engine, `"erubis"` and `"erb"` are supported. |
 | `runner` | `"./bin/rails runner"` | Command to run Ruby scripts, relative to `webpack`'s working directory. |
 
-These options may also be specified directly in your `webpack` config. For example, if your `webpack` process is running in a subdirectory of your Rails project:
+For example, if your `webpack` process is running in a subdirectory of your Rails project:
 
 ```js
 {
-  test: /\.erb$/,
   loader: 'rails-erb-loader',
   options: {
     runner: '../bin/rails runner',
@@ -112,7 +111,6 @@ Also supports building without Rails:
 
 ```js
 {
-  test: /\.erb$/,
   loader: 'rails-erb-loader',
   options: {
     runner: 'ruby',
