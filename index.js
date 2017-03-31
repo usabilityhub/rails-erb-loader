@@ -2,7 +2,6 @@ var exec = require('child_process').exec
 var path = require('path')
 var getOptions = require('loader-utils').getOptions
 var defaults = require('lodash.defaults')
-var util = require('util')
 
 function pushAll (dest, src) {
   Array.prototype.push.apply(dest, src)
@@ -90,15 +89,6 @@ function transformSource (runner, engine, source, map, callback) {
   child.stdin.end()
 }
 
-function setRailsRunner (config) {
-  config.runner = config.rails + ' runner'
-}
-
-var deprecatedSetRailsRunner = util.deprecate(setRailsRunner,
-  'The rails-erb-loader config option `rails` is deprecated. ' +
-  'Please use `runner` instead.'
-)
-
 module.exports = function railsErbLoader (source, map) {
   var loader = this
 
@@ -115,11 +105,6 @@ module.exports = function railsErbLoader (source, map) {
     runner: './bin/rails runner',
     engine: 'erubis'
   })
-
-  // Handle `rails` config option. This is the path to the rails binary.
-  if ('rails' in config) {
-    deprecatedSetRailsRunner(config)
-  }
 
   // loader-utils does not support parsing arrays, so we might have to do it
   // ourselves.
