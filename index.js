@@ -126,12 +126,15 @@ module.exports = function railsErbLoader (source, map) {
   // Modifying the return value of `getOptions` is not permitted.
   var config = defaults({}, getOptions(loader), {
     dependenciesRoot: 'app',
-    parseComments: true,
     runner: './bin/rails runner',
     engine: 'erubis'
   })
 
-  var dependencies = parseDependencies(source, config.dependenciesRoot)
+  // If we're in development then there's no point running regexes to add
+  // dependencies.
+  var dependencies = process.env.NODE_ENV === 'development'
+    ? parseDependencies(source, config.dependenciesRoot)
+    : []
 
   var callback = loader.async()
 
