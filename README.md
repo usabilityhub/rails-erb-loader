@@ -29,7 +29,7 @@ $ npm install rails-erb-loader --save-dev
 
 ## Usage
 
-Add `rails-erb-loader` to your preloaders.
+Add `rails-erb-loader` to your rules.
 
 ```js
 // webpack.config.js
@@ -46,6 +46,41 @@ module.exports = {
     }
   }
 };
+```
+
+Now you can use `.erb` files in your project, for example:
+
+`app/assets/javascripts/UserFormFields.jsx.erb`
+```erb
+/* rails-erb-loader-dependencies models/user models/image */
+
+export default function UserFormFields() {
+  return (
+    <div>
+      <label htmlFor='avatar'>
+        Avatar
+      </label>
+      <ImageField id='avatar' maxSize={<%= Image::MAX_SIZE %>} />
+      <label htmlFor='name'>
+        Name
+      </label>
+      <input
+        id='name'
+        type='text'
+        maxLength={<%= User::MAX_NAME_LENGTH %>}
+      />
+      <label htmlFor='age'>
+        Age
+      </label>
+      <input
+        id='age'
+        type='number'
+        min={<%= User::MIN_AGE %>}
+        max={<%= User::MAX_AGE %>}
+      />
+    </div>
+  )
+}
 ```
 
 ## Configuration
@@ -88,48 +123,24 @@ Also supports building without Rails:
 }
 ```
 
-### Configuration comments
+### Dependencies
 
-`rails-erb-loader` will parse files for overrides to query parameters. These must be `/* ... */` style block comments starting with the correct `rails-erb-loader-*` command. This comment syntax is supported in JavaScript, CSS, SASS and less.
+If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell `webpack` to watch these files - causing webpack-dev-server to rebuild when they are changed.
 
-#### `rails-erb-loader-dependencies`
+#### Watch individual files
 
-If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell `webpack` to watch these files and rebuild when they are changed.
+List dependencies in the comment. `.rb` extension is optional.
 
-Here is an example React component that depends on the `User` and `Image` Rails models:
+```js
+/* rails-erb-loader-dependencies models/account models/user */
+```
 
-```erb
-// app/assets/javascripts/UserFormFields.js
+#### Watch a whole directory
 
-/* rails-erb-loader-dependencies models/user models/image */
+To watch all files in a directory, end the path in a `/`.
 
-export default function UserFormFields() {
-  return (
-    <div>
-      <label htmlFor='avatar'>
-        Avatar
-      </label>
-      <ImageField id='avatar' maxSize={<%= Image::MAX_SIZE %>} />
-      <label htmlFor='name'>
-        Name
-      </label>
-      <input
-        id='name'
-        type='text'
-        maxLength={<%= User::MAX_NAME_LENGTH %>}
-      />
-      <label htmlFor='age'>
-        Age
-      </label>
-      <input
-        id='age'
-        type='number'
-        min={<%= User::MIN_AGE %>}
-        max={<%= User::MAX_AGE %>}
-      />
-    </div>
-  )
-}
+```js
+/* rails-erb-loader-dependencies ../config/locales/ */
 ```
 
 ## Contribute
