@@ -1,3 +1,4 @@
+var fs = require('fs')
 var exec = require('child_process').exec
 var path = require('path')
 var getOptions = require('loader-utils').getOptions
@@ -15,16 +16,13 @@ var ioDelimiter = '_' + '_RAILS_ERB_LOADER_DELIMETER__'
 /* Match any block comments that start with the string `rails-erb-loader-*`. */
 var configCommentRegex = /\/\*\s*rails-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
 
-/* Match any path ending with a file extension */
-var fileExtensionRegex = /\.\w*$/
-
-/* Takes a path and attaches `.rb` if it does not already have an extension. */
+/* Takes a path and attaches `.rb` if it has no extension nor trailing slash. */
 function defaultFileExtension (dependency) {
-  return fileExtensionRegex.test(dependency) ? dependency : dependency + '.rb'
+  return /((\.\w*)|\/)$/.test(dependency) ? dependency : dependency + '.rb'
 }
 
 /* Get each space separated path, ignoring any empty strings. */
-function parseDependencies (root, string) {
+function parseDependenciesList (root, string) {
   return string.split(/\s+/).reduce(function (accumulator, dependency) {
     if (dependency.length > 0) {
       var absolutePath = path.resolve(root, defaultFileExtension(dependency))
@@ -35,7 +33,8 @@ function parseDependencies (root, string) {
 }
 
 /* Update config object in place with comments from file */
-function parseComments (source, config) {
+function parseDependencies (source, root) {
+  var dependencies = []
   var match = null
   while ((match = configCommentRegex.exec(source))) {
     var option = match[1]
@@ -43,11 +42,7 @@ function parseComments (source, config) {
     switch (option) {
       case 'dependency':
       case 'dependencies':
-        var dependencies = parseDependencies(config.dependenciesRoot, value)
-        pushAll(config.dependencies, dependencies)
-        break
-      case 'dependencies-root':
-        config.dependenciesRoot = value
+        pushAll(dependencies, parseDependenciesList(root, value))
         break
       default:
         console.warn(
@@ -56,6 +51,7 @@ function parseComments (source, config) {
         )
     }
   }
+  return dependencies
 }
 
 /* Launch Rails in a child process and run the `erb_transformer.rb` script to
@@ -89,6 +85,36 @@ function transformSource (runner, engine, source, map, callback) {
   child.stdin.end()
 }
 
+function addDependencies (loader, paths, callback) {
+  var remaining = paths.length
+
+  if (remaining === 0) callback(null)
+
+  paths.forEach(function (path) {
+    fs.stat(path, function (error, stats) {
+      if (error) {
+        if (error.code === 'ENOENT') {
+          callback(new Error('Could not find dependency "' + path + '"'))
+        } else {
+          callback(error)
+        }
+      } else {
+        if (stats.isFile()) {
+          loader.addDependency(path)
+        } else if (stats.isDirectory()) {
+          loader.addContextDependency(path)
+        } else {
+          console.warning(
+            'rails-erb-loader ignored dependency that was neither a file nor a directory'
+          )
+        }
+        remaining--
+        if (remaining === 0) callback(null)
+      }
+    })
+  })
+}
+
 module.exports = function railsErbLoader (source, map) {
   var loader = this
 
@@ -99,33 +125,25 @@ module.exports = function railsErbLoader (source, map) {
   // Get options passed in the loader query, or use defaults.
   // Modifying the return value of `getOptions` is not permitted.
   var config = defaults({}, getOptions(loader), {
-    dependencies: [],
     dependenciesRoot: 'app',
-    parseComments: true,
     runner: './bin/rails runner',
     engine: 'erubis'
   })
 
-  // loader-utils does not support parsing arrays, so we might have to do it
-  // ourselves.
-  if (typeof config.dependencies === 'string') {
-    config.dependencies = parseDependencies(
-      config.dependenciesRoot,
-      config.dependencies
-    )
-  }
+  // If we're in development then there's no point running regexes to add
+  // dependencies.
+  var dependencies = process.env.NODE_ENV === 'development'
+    ? parseDependencies(source, config.dependenciesRoot)
+    : []
 
-  // Update `config` object in place with any parsed comments.
-  if (config.parseComments) {
-    parseComments(source, config)
-  }
+  var callback = loader.async()
 
   // Register watchers for any dependencies.
-  config.dependencies.forEach(function (dependency) {
-    loader.addDependency(dependency)
+  addDependencies(loader, dependencies, function (error) {
+    if (error) {
+      callback(error)
+    } else {
+      transformSource(config.runner, config.engine, source, map, callback)
+    }
   })
-
-  // Now actually transform the source.
-  var callback = loader.async()
-  transformSource(config.runner, config.engine, source, map, callback)
 }

@@ -29,7 +29,7 @@ $ npm install rails-erb-loader --save-dev
 
 ## Usage
 
-Add `rails-erb-loader` to your preloaders.
+Add `rails-erb-loader` to your rules.
 
 ```js
 // webpack.config.js
@@ -48,59 +48,10 @@ module.exports = {
 };
 ```
 
-## Configuration
+Now you can use `.erb` files in your project, for example:
 
-### Query parameters
-
-Can be configured with [query parameters](https://webpack.github.io/docs/using-loaders.html#query-parameters):
-
-| Option | Default | Description |
-| ------ | ------- | ----------- |
-| `dependencies` | `[]` | A list of Ruby files to watch for changes. |
-| `dependenciesRoot` | `"app"` | The root of your Rails project, relative to `webpack`'s working directory. |
-| `engine` | `"erubis"` | ERB Template engine, `"erubis"` and `"erb"` are supported right now. |
-| `parseComments` | `true` | Search files for [configuration comments](#configuration-comments) before compiling. |
-| `runner` | `"./bin/rails runner"` | Command to run Ruby scripts, relative to `webpack`'s working directory. |
-
-These options may also be specified directly in your `webpack` config. For example, if your `webpack` process is running in a subdirectory of your Rails project:
-
-```js
-{
-  test: /\.erb$/,
-  loader: 'rails-erb-loader',
-  options: {
-    runner: '../bin/rails runner',
-    dependenciesRoot: '../app',
-  }
-}
-```
-
-Also supports building without Rails:
-
-```js
-{
-  test: /\.erb$/,
-  loader: 'rails-erb-loader',
-  options: {
-    runner: 'ruby',
-    engine: 'erb'
-  }
-}
-```
-
-### Configuration comments
-
-`rails-erb-loader` will parse files for overrides to query parameters. These must be `/* ... */` style block comments starting with the correct `rails-erb-loader-*` command. This comment syntax is supported in JavaScript, CSS, SASS and less.
-
-#### `rails-erb-loader-dependencies`
-
-If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell `webpack` to watch these files and rebuild when they are changed.
-
-Here is an example React component that depends on the `User` and `Image` Rails models:
-
+`app/assets/javascripts/UserFormFields.jsx.erb`
 ```erb
-// app/assets/javascripts/UserFormFields.js
-
 /* rails-erb-loader-dependencies models/user models/image */
 
 export default function UserFormFields() {
@@ -130,6 +81,64 @@ export default function UserFormFields() {
     </div>
   )
 }
+```
+
+## Configuration
+
+### Query parameters
+
+Can be configured with [query parameters](https://webpack.github.io/docs/using-loaders.html#query-parameters):
+
+| Option | Default | Description |
+| ------ | ------- | ----------- |
+| `dependenciesRoot` | `"app"` | The root of your Rails project, relative to `webpack`'s working directory. |
+| `engine` | `"erubis"` | ERB Template engine, `"erubis"` and `"erb"` are supported right now. |
+| `runner` | `"./bin/rails runner"` | Command to run Ruby scripts, relative to `webpack`'s working directory. |
+
+These options may also be specified directly in your `webpack` config. For example, if your `webpack` process is running in a subdirectory of your Rails project:
+
+```js
+{
+  test: /\.erb$/,
+  loader: 'rails-erb-loader',
+  options: {
+    runner: '../bin/rails runner',
+    dependenciesRoot: '../app',
+  }
+}
+```
+
+Also supports building without Rails:
+
+```js
+{
+  test: /\.erb$/,
+  loader: 'rails-erb-loader',
+  options: {
+    runner: 'ruby',
+    engine: 'erb'
+  }
+}
+```
+
+### Dependencies
+
+If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell `webpack` to watch these files - causing webpack-dev-server to rebuild when they are changed.
+
+#### Watch individual files
+
+List dependencies in the comment. `.rb` extension is optional.
+
+```js
+/* rails-erb-loader-dependencies models/account models/user */
+```
+
+#### Watch a whole directory
+
+To watch all files in a directory, end the path in a `/`.
+
+```js
+/* rails-erb-loader-dependencies ../config/locales/ */
 ```
 
 ## Contribute
