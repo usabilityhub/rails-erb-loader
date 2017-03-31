@@ -91,7 +91,6 @@ Can be configured with [query parameters](https://webpack.github.io/docs/using-l
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
-| `dependencies` | `[]` | A list of Ruby files to watch for changes. |
 | `dependenciesRoot` | `"app"` | The root of your Rails project, relative to `webpack`'s working directory. |
 | `engine` | `"erubis"` | ERB Template engine, `"erubis"` and `"erb"` are supported right now. |
 | `parseComments` | `true` | Search files for [configuration comments](#configuration-comments) before compiling. |
