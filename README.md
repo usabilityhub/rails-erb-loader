@@ -5,7 +5,7 @@
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-> Embedded Ruby (`.erb`) `webpack` loader for Ruby projects.
+> Embedded Ruby (`.erb`) webpack loader for Ruby projects.
 
 Compiles Embedded Ruby template files in any Ruby project. Files are built using either the `Erubis` or `ERB` gem.
 
@@ -22,10 +22,16 @@ Compiles Embedded Ruby template files in any Ruby project. Files are built using
 
 ## Install
 
-Install from npm
+### npm
 
 ```console
 $ npm install rails-erb-loader --save-dev
+```
+
+### yarn
+
+```console
+$ yarn add -D rails-erb-loader
 ```
 
 ## Usage
@@ -92,11 +98,11 @@ Can be configured with [UseEntry#options](https://webpack.js.org/configuration/m
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
-| `dependenciesRoot` | `"app"` | The root of your Rails project, relative to `webpack`'s working directory. |
+| `dependenciesRoot` | `"app"` | The root of your Rails project, relative to webpack's working directory. |
 | `engine` | `"erubis"` | ERB Template engine, `"erubis"` and `"erb"` are supported. |
-| `runner` | `"./bin/rails runner"` | Command to run Ruby scripts, relative to `webpack`'s working directory. |
+| `runner` | `"./bin/rails runner"` | Command to run Ruby scripts, relative to webpack's working directory. |
 
-For example, if your `webpack` process is running in a subdirectory of your Rails project:
+For example, if your webpack process is running in a subdirectory of your Rails project:
 
 ```js
 {
@@ -122,7 +128,7 @@ Also supports building without Rails:
 
 ### Dependencies
 
-If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell `webpack` to watch these files - causing webpack-dev-server to rebuild when they are changed.
+If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell webpack to watch these files - causing webpack-dev-server to rebuild when they are changed.
 
 #### Watch individual files
 
