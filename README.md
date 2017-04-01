@@ -9,8 +9,6 @@
 
 Compiles Embedded Ruby template files in any Ruby project. Files are built using either the `Erubis` or `ERB` gem.
 
-**NOTE:** For compatibility with webpack 1, please use [version 3.2.0](https://github.com/usabilityhub/rails-erb-loader/tree/3.2.0).
-
 ## Table of Contents
 - [Install](#install)
 - [Usage](#usage)
