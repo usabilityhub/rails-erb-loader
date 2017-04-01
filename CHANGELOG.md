@@ -1,5 +1,14 @@
 # Change Log
 
+## [4.0.0] - 2017-04-01
+- **Breaking** Remove support for webpack 1 style configuration under `config.railsErbLoader` - #28
+- **Breaking** Remove support for `dependencies` in configuration (only via config comments) - #29
+- **Breaking** Remove `cacheable` option and comment - all files are cacheable by default - #27
+- **Breaking** Error when a dependency comment points to a non-existant file/directory - #29
+- Support adding a directory as a depedency - #29
+- Better error handling on invalid `runner` option. - #26
+- Skip parsing comments in production - #29
+
 ## [3.2.0] - 2016-12-12
 - Add `engine` config option to specify templating engine. - #21
 - Add `runner` config option to specify Ruby executable. - #21
