@@ -127,7 +127,7 @@ module.exports = function railsErbLoader (source, map) {
   var config = defaults({}, getOptions(loader), {
     dependenciesRoot: 'app',
     runner: './bin/rails runner',
-    engine: 'erubis'
+    engine: 'erb'
   })
 
   // If we're in development then there's no point running regexes to add

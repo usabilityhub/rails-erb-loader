@@ -97,7 +97,7 @@ Can be configured with [UseEntry#options](https://webpack.js.org/configuration/m
 | Option | Default | Description |
 | ------ | ------- | ----------- |
 | `dependenciesRoot` | `"app"` | The root of your Rails project, relative to webpack's working directory. |
-| `engine` | `"erubis"` | ERB Template engine, `"erubis"` and `"erb"` are supported. |
+| `engine` | `"erb"` | ERB Template engine, `"erubi"`, `"erubis"` and `"erb"` are supported. |
 | `runner` | `"./bin/rails runner"` | Command to run Ruby scripts, relative to webpack's working directory. |
 
 For example, if your webpack process is running in a subdirectory of your Rails project:
