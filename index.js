@@ -130,8 +130,8 @@ module.exports = function railsErbLoader (source, map) {
     engine: 'erb'
   })
 
-  // If we're in development then there's no point running regexes to add
-  // dependencies.
+  // Dependencies are only useful in development, so don't bother searching the
+  // file for them otherwise.
   var dependencies = process.env.NODE_ENV === 'development'
     ? parseDependencies(source, config.dependenciesRoot)
     : []
