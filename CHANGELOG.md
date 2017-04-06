@@ -1,5 +1,9 @@
 # Change Log
 
+## [5.0.0] - 2017-04-01
+ - **Breaking** Set default engine to `ERB`. - #31
+ - Add support for `Erubi` engine. - #31
+
 ## [4.0.0] - 2017-04-01
 - **Breaking** Remove support for webpack 1 style configuration under `config.railsErbLoader` - #28
 - **Breaking** Remove support for `dependencies` in configuration (only via config comments) - #29
