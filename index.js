@@ -58,8 +58,9 @@ function parseDependencies (source, root) {
  * output transformed source.
  */
 function transformSource (runner, engine, source, map, callback) {
+  var transformerPath = '\'' + path.join(__dirname, 'erb_transformer.rb') + '\''
   var child = exec(
-    runner + ' ' + path.join(__dirname, 'erb_transformer.rb') + ' ' + ioDelimiter + ' ' + engine,
+    runner + ' ' + transformerPath + ' ' + ioDelimiter + ' ' + engine,
     function (error, stdout) {
       // Output is delimited to filter out unwanted warnings or other output
       // that we don't want in our files.
