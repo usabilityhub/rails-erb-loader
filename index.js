@@ -17,7 +17,7 @@ var ioDelimiter = '_' + '_RAILS_ERB_LOADER_DELIMETER__'
 var configCommentRegex = /\/\*\s*rails-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
 
 /* Absolute path to the Ruby script that does the ERB transformation. */
-var transformerPath = '\'' + path.join(__dirname, 'erb_transformer.rb') + '\''
+var transformerPath = '"' + path.join(__dirname, 'erb_transformer.rb') + '"'
 
 /* Takes a path and attaches `.rb` if it has no extension nor trailing slash. */
 function defaultFileExtension (dependency) {
