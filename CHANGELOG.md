@@ -1,5 +1,8 @@
 # Change Log
 
+## [5.0.1] - 2017-05-16
+ - Support projects in paths containing spaces. #35
+
 ## [5.0.0] - 2017-04-01
  - **Breaking** Set default engine to `ERB`. - #31
  - Add support for `Erubi` engine. - #31
