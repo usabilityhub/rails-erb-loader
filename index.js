@@ -22,13 +22,9 @@ function defaultFileExtension (dependency) {
 }
 
 /* Split the `runner` string into a `.file` and its `.arguments` */
-function parseRunner (runnerString) {
-  var runner = runnerString.split(' ')
-  var runnerFile = runner.shift()
-  var runnerArguments = runner.reduce(function (accumulator, argument) {
-    accumulator.push(argument)
-    return accumulator
-  }, [])
+function parseRunner (runner) {
+  var runnerArguments = runner.split(' ')
+  var runnerFile = runnerArguments.shift()
 
   return { file: runnerFile, arguments: runnerArguments }
 }
