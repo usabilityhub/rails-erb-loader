@@ -16,6 +16,9 @@ var ioDelimiter = '_' + '_RAILS_ERB_LOADER_DELIMETER__'
 /* Match any block comments that start with the string `rails-erb-loader-*`. */
 var configCommentRegex = /\/\*\s*rails-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
 
+/* Absolute path to the Ruby script that does the ERB transformation. */
+var transformerPath = '"' + path.join(__dirname, 'erb_transformer.rb') + '"'
+
 /* Takes a path and attaches `.rb` if it has no extension nor trailing slash. */
 function defaultFileExtension (dependency) {
   return /((\.\w*)|\/)$/.test(dependency) ? dependency : dependency + '.rb'
@@ -68,11 +71,7 @@ function parseDependencies (source, root) {
 function transformSource (runner, engine, source, map, callback) {
   var child = execFile(
     runner.file,
-    runner.arguments.concat(
-      path.join(__dirname, 'erb_transformer.rb'),
-      ioDelimiter,
-      engine
-    ),
+    runner.arguments.concat(transformerPath, ioDelimiter, engine),
     function (error, stdout) {
       // Output is delimited to filter out unwanted warnings or other output
       // that we don't want in our files.
