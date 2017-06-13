@@ -1,5 +1,5 @@
 var fs = require('fs')
-var exec = require('child_process').exec
+var execFile = require('child_process').execFile
 var path = require('path')
 var getOptions = require('loader-utils').getOptions
 var defaults = require('lodash.defaults')
@@ -16,12 +16,17 @@ var ioDelimiter = '_' + '_RAILS_ERB_LOADER_DELIMETER__'
 /* Match any block comments that start with the string `rails-erb-loader-*`. */
 var configCommentRegex = /\/\*\s*rails-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
 
-/* Absolute path to the Ruby script that does the ERB transformation. */
-var transformerPath = '"' + path.join(__dirname, 'erb_transformer.rb') + '"'
-
 /* Takes a path and attaches `.rb` if it has no extension nor trailing slash. */
 function defaultFileExtension (dependency) {
   return /((\.\w*)|\/)$/.test(dependency) ? dependency : dependency + '.rb'
+}
+
+/* Split the `runner` string into a `.file` and its `.arguments` */
+function parseRunner (runner) {
+  var runnerArguments = runner.split(' ')
+  var runnerFile = runnerArguments.shift()
+
+  return { file: runnerFile, arguments: runnerArguments }
 }
 
 /* Get each space separated path, ignoring any empty strings. */
@@ -61,8 +66,13 @@ function parseDependencies (source, root) {
  * output transformed source.
  */
 function transformSource (runner, engine, source, map, callback) {
-  var child = exec(
-    runner + ' ' + transformerPath + ' ' + ioDelimiter + ' ' + engine,
+  var child = execFile(
+    runner.file,
+    runner.arguments.concat(
+      path.join(__dirname, 'erb_transformer.rb'),
+      ioDelimiter,
+      engine
+    ),
     function (error, stdout) {
       // Output is delimited to filter out unwanted warnings or other output
       // that we don't want in our files.
@@ -139,6 +149,9 @@ module.exports = function railsErbLoader (source, map) {
     ? parseDependencies(source, config.dependenciesRoot)
     : []
 
+  // Parse the runner string before passing it down to `transfromSource`
+  var runner = parseRunner(config.runner)
+
   var callback = loader.async()
 
   // Register watchers for any dependencies.
@@ -146,7 +159,7 @@ module.exports = function railsErbLoader (source, map) {
     if (error) {
       callback(error)
     } else {
-      transformSource(config.runner, config.engine, source, map, callback)
+      transformSource(runner, config.engine, source, map, callback)
     }
   })
 }
