@@ -8,7 +8,9 @@
   },
   "scripts": {
     "lint": "eslint index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test-webpack-2": "npm install webpack@2 --save-dev && jest",
+    "test-webpack-3": "npm install webpack@3 --save-dev && jest"
   },
   "repository": {
     "type": "git",
@@ -40,13 +42,15 @@
     "lodash.defaults": "^4.2.0"
   },
   "peerDependencies": {
-    "webpack": "2"
+    "webpack": "^2.0.0 || >= 3.0.0-rc.0 || ^3.0.0"
   },
   "devDependencies": {
     "eslint": "^3.11.1",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-node": "^3.0.5",
     "eslint-plugin-promise": "^3.3.0",
-    "eslint-plugin-standard": "^2.0.1"
+    "eslint-plugin-standard": "^2.0.1",
+    "jest": "^20.0.4",
+    "webpack": "^3.0.0"
   }
 }
