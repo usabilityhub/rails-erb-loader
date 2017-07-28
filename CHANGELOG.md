@@ -1,5 +1,9 @@
 # Change Log
 
+## [5.1.0] - 2017-07-28
+ - Support Webpack 3 - #41
+ - Add test suite - #41
+
 ## [5.0.2] - 2017-06-13
  - Use `execFile` to spawn the source transformer - #37
 
