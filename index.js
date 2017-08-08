@@ -79,11 +79,24 @@ function transformSource (runner, engine, source, map, callback) {
       var sourceRegex = new RegExp(ioDelimiter + '([\\s\\S]+)' + ioDelimiter)
       var matches = stdout.match(sourceRegex)
       var transformedSource = matches && matches[1]
+
+      if (error != null) {
+        console.error([
+          'rails-erb-loader has hit an error:',
+          'message: ' + error.message,
+          'code: ' + error.code,
+          'full stdout:',
+          '----------------------',
+          stdout,
+          '----------------------'
+        ].join('\n'), error)
+      }
       callback(error, transformedSource, map)
     }
   )
   child.stdin.on('error', function (error) {
     if (error.code === 'EPIPE') {
+      console.error('rails-erb-loader hit an EPIPE error ', error)
       // When the `runner` command is not found, stdin will not be open.
       // Attemping to write then causes an EPIPE error. Ignore this because the
       // `exec` callback gives a more meaningful error that we show to the user.
