@@ -1,5 +1,11 @@
 # Change Log
 
+## [5.2.1] - 2017-08-25
+ - Add timeout option - #46
+
+## [5.2.0] - 2017-08-25
+**UNPUBLISHED** _Accidentally published without pulling #46_
+
 ## [5.1.0] - 2017-07-28
  - Support Webpack 3 - #41
  - Add test suite - #41
