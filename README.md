@@ -99,6 +99,7 @@ Can be configured with [UseEntry#options](https://webpack.js.org/configuration/m
 | `dependenciesRoot` | `"app"` | The root of your Rails project, relative to webpack's working directory. |
 | `engine` | `"erb"` | ERB Template engine, `"erubi"`, `"erubis"` and `"erb"` are supported. |
 | `runner` | `"./bin/rails runner"` | Command to run Ruby scripts, relative to webpack's working directory. |
+| `timeout` | `0` | Timeout for the runner task in seconds. `0` is no timeout. Set this if you want a hanging runner to error out the build.
 
 For example, if your webpack process is running in a subdirectory of your Rails project:
 

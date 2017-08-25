@@ -1,5 +1,8 @@
-delimiter = ARGV[0]
-engine = ARGV[1]
+require 'timeout'
+
+delimiter, engine, timeout = ARGV
+timeout = Float(timeout)
+
 handler = case engine
   when 'erubi'
     require 'erubi'
@@ -13,8 +16,16 @@ handler = case engine
   else raise "Unknown templating engine `#{engine}`"
 end
 
-if engine == 'erubi'
-  puts "#{delimiter}#{eval(handler.new(STDIN.read).src)}#{delimiter}"
-else
-  puts "#{delimiter}#{handler.new(STDIN.read).result}#{delimiter}"
+begin
+  Timeout.timeout(timeout) do
+    source = STDIN.read
+
+    if engine == 'erubi'
+      puts "#{delimiter}#{eval(handler.new(source).src)}#{delimiter}"
+    else
+      puts "#{delimiter}#{handler.new(source).result}#{delimiter}"
+    end
+  end
+rescue Timeout::Error
+  raise "rails-erb-loader took longer than the specified #{timeout} second timeout"
 end

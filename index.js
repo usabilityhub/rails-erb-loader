@@ -16,6 +16,9 @@ var ioDelimiter = '_' + '_RAILS_ERB_LOADER_DELIMETER__'
 /* Match any block comments that start with the string `rails-erb-loader-*`. */
 var configCommentRegex = /\/\*\s*rails-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
 
+/* Absolute path to the Ruby script that does the ERB transformation. */
+var runnerPath = path.join(__dirname, 'erb_transformer.rb')
+
 /* Takes a path and attaches `.rb` if it has no extension nor trailing slash. */
 function defaultFileExtension (dependency) {
   return /((\.\w*)|\/)$/.test(dependency) ? dependency : dependency + '.rb'
@@ -65,15 +68,16 @@ function parseDependencies (source, root) {
 /* Launch Rails in a child process and run the `erb_transformer.rb` script to
  * output transformed source.
  */
-function transformSource (runner, engine, source, map, callback) {
+function transformSource (runner, config, source, map, callback) {
   var child = execFile(
     runner.file,
     runner.arguments.concat(
-      path.join(__dirname, 'erb_transformer.rb'),
+      runnerPath,
       ioDelimiter,
-      engine
+      config.engine,
+      config.timeout
     ),
-    function (error, stdout) {
+    function (error, stdout, stderr) {
       // Output is delimited to filter out unwanted warnings or other output
       // that we don't want in our files.
       var sourceRegex = new RegExp(ioDelimiter + '([\\s\\S]+)' + ioDelimiter)
@@ -140,7 +144,8 @@ module.exports = function railsErbLoader (source, map) {
   var config = defaults({}, getOptions(loader), {
     dependenciesRoot: 'app',
     runner: './bin/rails runner',
-    engine: 'erb'
+    engine: 'erb',
+    timeout: 0
   })
 
   // Dependencies are only useful in development, so don't bother searching the
@@ -159,7 +164,7 @@ module.exports = function railsErbLoader (source, map) {
     if (error) {
       callback(error)
     } else {
-      transformSource(runner, config.engine, source, map, callback)
+      transformSource(runner, config, source, map, callback)
     }
   })
 }
