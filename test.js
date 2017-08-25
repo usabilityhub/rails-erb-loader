@@ -19,6 +19,7 @@ function compile (config, callback) {
           options: {
             runner: config.runner,
             engine: config.engine,
+            timeout: config.timeout,
             dependenciesRoot: './test/dependencies'
           }
         }
@@ -89,6 +90,15 @@ test('loads through a Rails-like runner', function (done) {
   compile2({ file: 'runner.js.erb', runner: './test/runner' }, done, function (stats) {
     expect(stats.compilation.errors).toEqual([])
     expectInOutput("var env = 'test'")
+    done()
+  })
+})
+
+test('times out with error', function (done) {
+  compile2({ file: 'sleep.js.erb', runner: './test/runner', timeout: 1 }, done, function (stats) {
+    expect(stats.compilation.errors[0].message).toMatch(
+      'rails-erb-loader took longer than the specified 1.0 second timeout'
+    )
     done()
   })
 })
