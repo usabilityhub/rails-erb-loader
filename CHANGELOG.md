@@ -1,5 +1,8 @@
 # Change Log
 
+## [5.3.0] - 2018-03-01
+ - Replace timeout option with timeoutMs - #55
+
 ## [5.2.1] - 2017-08-25
  - Add timeout option - #46
 
