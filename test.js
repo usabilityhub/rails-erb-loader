@@ -1,7 +1,7 @@
 var MemoryFS = require('memory-fs')
 var path = require('path')
 var webpack = require('webpack')
-
+var defaults = require('lodash.defaults')
 
 var fs = new MemoryFS()
 
@@ -16,12 +16,9 @@ function compile (config, callback) {
         {
           test: /\.erb$/,
           loader: './index',
-          options: {
-            runner: config.runner,
-            engine: config.engine,
-            timeout: config.timeout,
+          options: defaults({
             dependenciesRoot: './test/dependencies'
-          }
+          }, config)
         }
       ]
     },
@@ -34,13 +31,13 @@ function compile (config, callback) {
 }
 
 function compile2 (config, done, successCallback) {
-  compile (config, function (err, stats) {
-    if (err) {
+  compile(config, function (error, stats) {
+    if (error) {
       fail(error)
       done()
-      return
+    } else {
+      successCallback(stats)
     }
-    successCallback(stats)
   })
 }
 
@@ -85,7 +82,6 @@ test('loads with erubi', function (done) {
   })
 })
 
-
 test('loads through a Rails-like runner', function (done) {
   compile2({ file: 'runner.js.erb', runner: './test/runner' }, done, function (stats) {
     expect(stats.compilation.errors).toEqual([])
@@ -94,10 +90,29 @@ test('loads through a Rails-like runner', function (done) {
   })
 })
 
-test('times out with error', function (done) {
-  compile2({ file: 'sleep.js.erb', runner: './test/runner', timeout: 1 }, done, function (stats) {
+test('times out with error (timeoutMs: 1000)', function (done) {
+  compile2({ file: 'sleep.js.erb', timeoutMs: 1000 }, done, function (stats) {
+    expect(stats.compilation.errors.length).toEqual(1)
     expect(stats.compilation.errors[0].message).toMatch(
-      'rails-erb-loader took longer than the specified 1.0 second timeout'
+      'rails-erb-loader took longer than the specified 1000ms timeout'
+    )
+    done()
+  })
+})
+
+test('times out with error (DEPRECATED timeout: 1)', function (done) {
+  compile2({ file: 'sleep.js.erb', timeout: 1 }, done, function (stats) {
+    expect(stats.compilation.errors[0].message).toMatch(
+      'rails-erb-loader took longer than the specified 1000ms timeout'
+    )
+    done()
+  })
+})
+
+test('fails when both timeout and timeoutMs are set', function (done) {
+  compile2({ file: 'sleep.js.erb', timeout: 1, timeoutMs: 1000 }, done, function (stats) {
+    expect(stats.compilation.errors[0].message).toMatch(
+      'TypeError: Both options `timeout` and `timeoutMs` were set'
     )
     done()
   })

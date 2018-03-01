@@ -3,6 +3,7 @@ var execFile = require('child_process').execFile
 var path = require('path')
 var getOptions = require('loader-utils').getOptions
 var defaults = require('lodash.defaults')
+var util = require('util')
 
 function pushAll (dest, src) {
   Array.prototype.push.apply(dest, src)
@@ -74,16 +75,27 @@ function transformSource (runner, config, source, map, callback) {
     runner.arguments.concat(
       runnerPath,
       ioDelimiter,
-      config.engine,
-      config.timeout
+      config.engine
     ),
+    { timeout: config.timeoutMs },
     function (error, stdout, stderr) {
       // Output is delimited to filter out unwanted warnings or other output
       // that we don't want in our files.
       var sourceRegex = new RegExp(ioDelimiter + '([\\s\\S]+)' + ioDelimiter)
       var matches = stdout.match(sourceRegex)
       var transformedSource = matches && matches[1]
-      callback(error, transformedSource, map)
+      if (error && error.signal === 'SIGTERM') {
+        if (config.timeoutMs) {
+          callback(new Error(
+            'rails-erb-loader took longer than the specified ' + config.timeoutMs +
+            'ms timeout'
+          ))
+        } else {
+          callback(error)
+        }
+      } else {
+        callback(error, transformedSource, map)
+      }
     }
   )
   child.stdin.on('error', function (error) {
@@ -132,6 +144,17 @@ function addDependencies (loader, paths, callback) {
   })
 }
 
+var setTimeoutMsFromTimeoutInPlace = util.deprecate(function (config) {
+  if (config.timeoutMs != null) {
+    throw new TypeError(
+      'Both options `timeout` and `timeoutMs` were set -- please just use ' +
+      '`timeoutMs`'
+    )
+  }
+  config.timeoutMs = config.timeout * 1000
+  delete config.timeout
+}, 'rails-erb-loader `timeout` option is deprecated in favor of `timeoutMs`')
+
 module.exports = function railsErbLoader (source, map) {
   var loader = this
 
@@ -144,9 +167,12 @@ module.exports = function railsErbLoader (source, map) {
   var config = defaults({}, getOptions(loader), {
     dependenciesRoot: 'app',
     runner: './bin/rails runner',
-    engine: 'erb',
-    timeout: 0
+    engine: 'erb'
   })
+
+  if (config.timeout !== undefined) {
+    setTimeoutMsFromTimeoutInPlace(config)
+  }
 
   // Dependencies are only useful in development, so don't bother searching the
   // file for them otherwise.
