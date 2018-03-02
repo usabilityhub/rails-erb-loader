@@ -127,7 +127,7 @@ function transformSource (runner, config, source, map, callback) {
 function addDependencies (loader, paths, callback) {
   var remaining = paths.length
 
-  if (remaining === 0) { callback(null) }
+  if (remaining === 0) callback(null)
 
   paths.forEach(function (path) {
     fs.stat(path, function (error, stats) {
@@ -148,14 +148,14 @@ function addDependencies (loader, paths, callback) {
           )
         }
         remaining--
-        if (remaining === 0) { callback(null) }
+        if (remaining === 0) callback(null)
       }
     })
   })
 }
 
 var setTimeoutMsFromTimeoutInPlace = util.deprecate(function (config) {
-  if (config.timeoutMs) {
+  if (config.timeoutMs != null) {
     throw new TypeError(
       'Both options `timeout` and `timeoutMs` were set -- please just use ' +
       '`timeoutMs`'

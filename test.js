@@ -1,5 +1,3 @@
-/* globals test, expect, fail */
-
 var MemoryFS = require('memory-fs')
 var path = require('path')
 var webpack = require('webpack')
