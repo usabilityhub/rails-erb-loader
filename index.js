@@ -76,7 +76,8 @@ function transformSource (runner, config, source, map, callback) {
       runnerPath,
       ioDelimiter,
       config.engine
-    )
+    ),
+    { stdio: ['pipe', 'pipe', process.stderr] }
   )
   if (config.timeoutMs) {
     var cancelTimeout = setTimeout(function () {
@@ -106,10 +107,6 @@ function transformSource (runner, config, source, map, callback) {
     } else {
       callback(new Error('rails-erb-loader failed with code: ' + code))
     }
-  })
-
-  child.stderr.on('data', function (data) {
-    callback(data)
   })
 
   child.stdin.on('error', function (error) {
