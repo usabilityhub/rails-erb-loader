@@ -98,7 +98,7 @@ function transformSource (runner, config, source, map, callback) {
       var matches = dataBuffers.join('').match(sourceRegex)
       var transformedSource = matches && matches[1]
       if (config.timeoutMs) { cancelTimeout() }
-      callback(undefined, transformedSource, map)
+      callback(null, transformedSource, map)
     } else if (child.killed) {
       callback(new Error(
         'rails-erb-loader took longer than the specified ' + config.timeoutMs +
