@@ -109,16 +109,13 @@ function transformSource (runner, config, source, map, callback) {
     }
   })
 
+  child.on('error', callback)
+
   child.stdin.on('error', function (error) {
-    // When the `runner` command is not found, stdin will not be open.
-    // Attemping to write then causes an EPIPE error. Ignore this because the
-    // `exec` callback gives a more meaningful error that we show to the user.
-    if (error.code !== 'EPIPE') {
-      console.error(
-        'rails-erb-loader encountered an unexpected error while writing to stdin: "' +
-        error.message + '". Please report this to the maintainers.'
-      )
-    }
+    console.error(
+      'rails-erb-loader encountered an unexpected error while writing to stdin: "' +
+      error.message + '". Please report this to the maintainers.'
+    )
   })
   child.stdin.write(source)
   child.stdin.end()
