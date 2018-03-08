@@ -16,9 +16,10 @@ function compile (config, callback) {
         {
           test: /\.erb$/,
           loader: './index',
-          options: defaults({
-            dependenciesRoot: './test/dependencies'
-          }, config)
+          options: defaults({}, config, {
+            dependenciesRoot: './test/dependencies',
+            timeoutMs: 2000
+          })
         }
       ]
     },
@@ -109,7 +110,7 @@ test('times out with error (timeoutMs: 1000)', function (done) {
 })
 
 test('times out with error (DEPRECATED timeout: 1)', function (done) {
-  compile2({ file: 'sleep.js.erb', timeout: 1 }, done, function (stats) {
+  compile2({ file: 'sleep.js.erb', timeout: 1, timeoutMs: null }, done, function (stats) {
     expect(stats.compilation.errors[0].message).toMatch(
       'rails-erb-loader took longer than the specified 1000ms timeout'
     )
