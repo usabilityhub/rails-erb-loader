@@ -79,11 +79,9 @@ function transformSource (runner, config, source, map, callback) {
     ),
     { stdio: ['pipe', 'pipe', process.stderr] }
   )
-  if (config.timeoutMs) {
-    var cancelTimeout = setTimeout(function () {
-      child.kill()
-    }, config.timeoutMs)
-  }
+  var timeoutId = config.timeoutMs
+    ? setTimeout(function () { child.kill() }, config.timeoutMs)
+    : -1
 
   var dataBuffers = []
   child.stdout.on('data', function (data) {
@@ -97,7 +95,9 @@ function transformSource (runner, config, source, map, callback) {
       var sourceRegex = new RegExp(ioDelimiter + '([\\s\\S]+)' + ioDelimiter)
       var matches = dataBuffers.join('').match(sourceRegex)
       var transformedSource = matches && matches[1]
-      if (config.timeoutMs) { cancelTimeout() }
+      if (timeoutId !== -1) {
+        clearTimeout(timeoutId)
+      }
       callback(null, transformedSource, map)
     } else if (child.killed) {
       callback(new Error(
