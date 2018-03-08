@@ -1,5 +1,8 @@
 # Change Log
 
+## [5.4.0] - 2018-03-08
+ - Remove input file limit by streaming instead of using a fixed size buffer - #56
+
 ## [5.3.0] - 2018-03-01
  - Replace timeout option with timeoutMs - #55
 
