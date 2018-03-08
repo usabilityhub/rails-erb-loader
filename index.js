@@ -1,5 +1,5 @@
 var fs = require('fs')
-var execFile = require('child_process').execFile
+var spawn = require('child_process').spawn
 var path = require('path')
 var getOptions = require('loader-utils').getOptions
 var defaults = require('lodash.defaults')
@@ -70,45 +70,52 @@ function parseDependencies (source, root) {
  * output transformed source.
  */
 function transformSource (runner, config, source, map, callback) {
-  var child = execFile(
+  var child = spawn(
     runner.file,
     runner.arguments.concat(
       runnerPath,
       ioDelimiter,
       config.engine
     ),
-    { timeout: config.timeoutMs },
-    function (error, stdout, stderr) {
-      // Output is delimited to filter out unwanted warnings or other output
-      // that we don't want in our files.
-      var sourceRegex = new RegExp(ioDelimiter + '([\\s\\S]+)' + ioDelimiter)
-      var matches = stdout.match(sourceRegex)
-      var transformedSource = matches && matches[1]
-      if (error && error.signal === 'SIGTERM') {
-        if (config.timeoutMs) {
-          callback(new Error(
-            'rails-erb-loader took longer than the specified ' + config.timeoutMs +
-            'ms timeout'
-          ))
-        } else {
-          callback(error)
-        }
-      } else {
-        callback(error, transformedSource, map)
-      }
-    }
+    { stdio: ['pipe', 'pipe', process.stderr] }
   )
-  child.stdin.on('error', function (error) {
-    if (error.code === 'EPIPE') {
-      // When the `runner` command is not found, stdin will not be open.
-      // Attemping to write then causes an EPIPE error. Ignore this because the
-      // `exec` callback gives a more meaningful error that we show to the user.
+  if (config.timeoutMs) {
+    var cancelTimeout = setTimeout(function () {
+      child.kill()
+    }, config.timeoutMs)
+  }
+
+  var dataBuffers = []
+  child.stdout.on('data', function (data) {
+    // Output is delimited to filter out unwanted warnings or other output
+    // that we don't want in our files.
+    dataBuffers.push(data)
+  })
+
+  child.on('close', function (code) {
+    if (code === 0) {
+      var sourceRegex = new RegExp(ioDelimiter + '([\\s\\S]+)' + ioDelimiter)
+      var matches = dataBuffers.join('').match(sourceRegex)
+      var transformedSource = matches && matches[1]
+      if (config.timeoutMs) { cancelTimeout() }
+      callback(null, transformedSource, map)
+    } else if (child.killed) {
+      callback(new Error(
+        'rails-erb-loader took longer than the specified ' + config.timeoutMs +
+        'ms timeout'
+      ))
     } else {
-      console.error(
-        'rails-erb-loader encountered an unexpected error while writing to stdin: "' +
-        error.message + '". Please report this to the maintainers.'
-      )
+      callback(new Error('rails-erb-loader failed with code: ' + code))
     }
+  })
+
+  child.on('error', callback)
+
+  child.stdin.on('error', function (error) {
+    console.error(
+      'rails-erb-loader encountered an unexpected error while writing to stdin: "' +
+      error.message + '". Please report this to the maintainers.'
+    )
   })
   child.stdin.write(source)
   child.stdin.end()

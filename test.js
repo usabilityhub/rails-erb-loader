@@ -46,7 +46,7 @@ function readOutput () {
   return fileContent.toString()
 }
 
-function expectInOutput(str) {
+function expectInOutput (str) {
   expect(readOutput()).toEqual(expect.stringContaining(str))
 }
 
@@ -86,6 +86,14 @@ test('loads through a Rails-like runner', function (done) {
   compile2({ file: 'runner.js.erb', runner: './test/runner' }, done, function (stats) {
     expect(stats.compilation.errors).toEqual([])
     expectInOutput("var env = 'test'")
+    done()
+  })
+})
+
+test('does not error with large files', function (done) {
+  compile2({ file: 'giant.js.erb' }, done, function (stats) {
+    expect(stats.compilation.errors).toEqual([])
+    expect(readOutput()).toMatch(/var bigData = 'a{204740}'/)
     done()
   })
 })

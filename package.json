@@ -31,7 +31,8 @@
     "Jonathan Lehman (https://github.com/jdlehman)",
     "Maria Kousta (https://github.com/mkousta)",
     "Stanislav E. Govorov (https://github.com/govorov)",
-    "Faraz Yashar (https://github.com/fny)"
+    "Faraz Yashar (https://github.com/fny)",
+    "Evan Pavlica (https://github.com/xicreative)"
   ],
   "license": "MIT",
   "bugs": {
@@ -52,6 +53,7 @@
     "eslint-plugin-promise": "^3.3.0",
     "eslint-plugin-standard": "^2.0.1",
     "jest": "^20.0.4",
+    "memory-fs": "^0.4.1",
     "webpack": "^3.0.0"
   }
 }
