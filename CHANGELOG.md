@@ -1,5 +1,8 @@
 # Change Log
 
+## [5.4.2] - 2018-05-08
+ - Improve error reporting when killed by signal - #65
+
 ## [5.4.1] - 2018-03-08
  - Fix error clearing timeout - #61
 
