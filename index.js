@@ -90,7 +90,15 @@ function transformSource (runner, config, source, map, callback) {
     dataBuffers.push(data)
   })
 
-  child.on('close', function (code) {
+  // NOTE: From 'exit' event docs (assumed to apply to 'close' event)
+  //
+  // "If the process exited, code is the final exit code of the process,
+  // otherwise null. If the process terminated due to receipt of a signal,
+  // signal is the string name of the signal, otherwise null. One of the two
+  // will always be non-null."
+  //
+  // see: https://nodejs.org/api/child_process.html#child_process_event_exit
+  child.on('close', function (code, signal) {
     if (code === 0) {
       var sourceRegex = new RegExp(ioDelimiter + '([\\s\\S]+)' + ioDelimiter)
       var matches = dataBuffers.join('').match(sourceRegex)
@@ -100,10 +108,14 @@ function transformSource (runner, config, source, map, callback) {
       }
       callback(null, transformedSource, map)
     } else if (child.killed) {
+      // `child.killed` is true only if the process was killed by `ChildProcess#kill`,
+      // ie. after a timeout.
       callback(new Error(
         'rails-erb-loader took longer than the specified ' + config.timeoutMs +
         'ms timeout'
       ))
+    } else if (signal !== null) {
+      callback(new Error('rails-erb-loader was terminated with signal: ' + signal))
     } else {
       callback(new Error('rails-erb-loader failed with code: ' + code))
     }
