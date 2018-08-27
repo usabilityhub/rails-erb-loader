@@ -100,6 +100,7 @@ Can be configured with [UseEntry#options](https://webpack.js.org/configuration/m
 | `engine` | `"erb"` | ERB Template engine, `"erubi"`, `"erubis"` and `"erb"` are supported. |
 | `runner` | `"./bin/rails runner"` | Command to run Ruby scripts, relative to webpack's working directory. |
 | `timeoutMs` | `0` | Timeout for the runner task in milliseconds. `0` is no timeout. Set this if you want a hanging runner to error out the build. |
+| `env` | `process.env` | Environment variables to be passed to runner. |
 
 For example, if your webpack process is running in a subdirectory of your Rails project:
 

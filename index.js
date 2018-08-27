@@ -70,6 +70,11 @@ function parseDependencies (source, root) {
  * output transformed source.
  */
 function transformSource (runner, config, source, map, callback) {
+  var subprocessOptions = {
+    stdio: ['pipe', 'pipe', process.stderr],
+    env: config.env
+  }
+
   var child = spawn(
     runner.file,
     runner.arguments.concat(
@@ -77,7 +82,7 @@ function transformSource (runner, config, source, map, callback) {
       ioDelimiter,
       config.engine
     ),
-    { stdio: ['pipe', 'pipe', process.stderr] }
+    subprocessOptions
   )
   var timeoutId = config.timeoutMs
     ? setTimeout(function () { child.kill() }, config.timeoutMs)
@@ -186,7 +191,8 @@ module.exports = function railsErbLoader (source, map) {
   var config = defaults({}, getOptions(loader), {
     dependenciesRoot: 'app',
     runner: './bin/rails runner',
-    engine: 'erb'
+    engine: 'erb',
+    env: process.env
   })
 
   if (config.timeout !== undefined) {

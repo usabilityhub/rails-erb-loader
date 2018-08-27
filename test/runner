@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 
 require 'ostruct'
-Runner = OpenStruct.new(env: 'test')
+Runner = OpenStruct.new(env: ENV["ENV"] || 'test')
 
 def perform(file, *command_argv)
   ARGV.replace(command_argv)
