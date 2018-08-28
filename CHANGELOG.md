@@ -1,5 +1,8 @@
 # Change Log
 
+## [5.5.0] - 2018-08-28
+ - Allow env to be specified in options - #70
+
 ## [5.4.2] - 2018-05-08
  - Improve error reporting when killed by signal - #65
 
