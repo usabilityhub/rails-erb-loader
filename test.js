@@ -91,6 +91,14 @@ test('loads through a Rails-like runner', function (done) {
   })
 })
 
+test('loads with env specified in option', function (done) {
+  compile2({ file: 'runner.js.erb', runner: './test/runner', env: {ENV: 'custom'} }, done, function (stats) {
+    expect(stats.compilation.errors).toEqual([])
+    expectInOutput("var env = 'custom'")
+    done()
+  })
+})
+
 test('does not error with large files', function (done) {
   compile2({ file: 'giant.js.erb' }, done, function (stats) {
     expect(stats.compilation.errors).toEqual([])
