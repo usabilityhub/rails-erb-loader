@@ -9,3 +9,6 @@ cache:
 node_js:
   # LTS version(s)
   - "8"
+install:
+  - gem install erubis erubi
+  - npm install
