@@ -1,0 +1,11 @@
+# Send builds to container-based infrastructure
+# http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+sudo: false
+language: node_js
+cache:
+  yarn: true
+  directories:
+  - node_modules
+node_js:
+  # LTS version(s)
+  - "8"
