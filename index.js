@@ -14,7 +14,7 @@ function pushAll (dest, src) {
  */
 var ioDelimiter = '_' + '_RAILS_ERB_LOADER_DELIMETER__'
 
-/* Match any block comments that start with the string `rails-erb-loader-*`. */
+/* Match any block comments that start with the string `rails-erb-loader-`. */
 var configCommentRegex = /\/\*\s*rails-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g
 
 /* Absolute path to the Ruby script that does the ERB transformation. */
