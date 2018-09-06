@@ -4,6 +4,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/rails-erb-loader.svg?style=flat-square)](https://npm-stat.com/charts.html?package=rails-erb-loader&from=2016-11-07)
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![Build Status](http://img.shields.io/travis/usabilityhub/rails-erb-loader.svg?style=flat-square)](https://travis-ci.org/usabilityhub/rails-erb-loader)
 
 > Embedded Ruby (`.erb`) webpack loader for Ruby projects.
 
