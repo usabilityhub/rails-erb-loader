@@ -70,6 +70,7 @@ function parseDependencies (source, root) {
  * output transformed source.
  */
 function transformSource (runner, config, source, map, callback) {
+  var callbackCalled = false
   var subprocessOptions = {
     stdio: ['pipe', 'pipe', process.stderr],
     env: config.env
@@ -104,6 +105,8 @@ function transformSource (runner, config, source, map, callback) {
   //
   // see: https://nodejs.org/api/child_process.html#child_process_event_exit
   child.on('close', function (code, signal) {
+    if (callbackCalled) return
+
     if (code === 0) {
       var sourceRegex = new RegExp(ioDelimiter + '([\\s\\S]+)' + ioDelimiter)
       var matches = dataBuffers.join('').match(sourceRegex)
@@ -124,9 +127,16 @@ function transformSource (runner, config, source, map, callback) {
     } else {
       callback(new Error('rails-erb-loader failed with code: ' + code))
     }
+
+    callbackCalled = true
   })
 
-  child.on('error', callback)
+  child.on('error', function (error) {
+    if (callbackCalled) return
+
+    callback(error)
+    callbackCalled = true
+  })
 
   child.stdin.on('error', function (error) {
     console.error(
