@@ -1,5 +1,8 @@
 # Change Log
 
+## [5.5.1] - 2019-01-3
+ - Prevent webpack loader callback from being called multiple times - #76
+
 ## [5.5.0] - 2018-08-28
  - Allow env to be specified in options - #70
 
