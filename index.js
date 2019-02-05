@@ -91,8 +91,6 @@ function transformSource (runner, config, source, map, callback) {
 
   var dataBuffers = []
   child.stdout.on('data', function (data) {
-    // Output is delimited to filter out unwanted warnings or other output
-    // that we don't want in our files.
     dataBuffers.push(data)
   })
 
@@ -108,8 +106,10 @@ function transformSource (runner, config, source, map, callback) {
     if (callbackCalled) return
 
     if (code === 0) {
+      // Output is delimited to filter out unwanted warnings or other output
+      // that we don't want in our files.
       var sourceRegex = new RegExp(ioDelimiter + '([\\s\\S]+)' + ioDelimiter)
-      var matches = dataBuffers.join('').match(sourceRegex)
+      var matches = Buffer.concat(dataBuffers).toString().match(sourceRegex)
       var transformedSource = matches && matches[1]
       if (timeoutId !== -1) {
         clearTimeout(timeoutId)
