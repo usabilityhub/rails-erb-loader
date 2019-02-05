@@ -1,6 +1,9 @@
 # Change Log
 
-## [5.5.1] - 2019-01-3
+## [5.5.2] - 2019-02-05
+ - Fix broken unicode characters in output. - #77
+
+## [5.5.1] - 2019-01-03
  - Prevent webpack loader callback from being called multiple times - #76
 
 ## [5.5.0] - 2018-08-28
