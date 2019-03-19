@@ -6,11 +6,15 @@
   "engines": {
     "node": ">=0.10.0"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "scripts": {
     "lint": "eslint index.js",
     "test": "jest",
-    "test-webpack-2": "npm install webpack@2 --save-dev && jest",
-    "test-webpack-3": "npm install webpack@3 --save-dev && jest"
+    "test-webpack-2": "npm install webpack@2 --no-save && jest",
+    "test-webpack-3": "npm install webpack@3 --no-save && jest",
+    "test-webpack-4": "npm install webpack@4 --no-save && jest"
   },
   "repository": {
     "type": "git",
@@ -43,20 +47,21 @@
   },
   "homepage": "https://github.com/usabilityhub/rails-erb-loader#readme",
   "dependencies": {
-    "loader-utils": "^1.1.0",
+    "loader-utils": "^1.2.3",
     "lodash.defaults": "^4.2.0"
   },
   "peerDependencies": {
-    "webpack": "^2.0.0 || >= 3.0.0-rc.0 || ^3.0.0"
+    "webpack": "^2.0.0 || ^3.0.0 || ^4.0.0"
   },
   "devDependencies": {
-    "eslint": "^3.11.1",
-    "eslint-config-standard": "^6.2.1",
-    "eslint-plugin-node": "^3.0.5",
-    "eslint-plugin-promise": "^3.3.0",
-    "eslint-plugin-standard": "^2.0.1",
-    "jest": "^20.0.4",
+    "eslint": "^5.15.3",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "jest": "^24.5.0",
     "memory-fs": "^0.4.1",
-    "webpack": "^3.0.0"
+    "webpack": "^4.29.6"
   }
 }

@@ -1,38 +1,7 @@
-var MemoryFS = require('memory-fs')
-var path = require('path')
-var webpack = require('webpack')
-var defaults = require('lodash.defaults')
-
-var fs = new MemoryFS()
-
-function compile (config, callback) {
-  config.runner = config.runner || 'ruby'
-  config.engine = config.engine || 'erb'
-
-  var compiler = webpack({
-    entry: './test/erb/' + config.file,
-    module: {
-      loaders: [
-        {
-          test: /\.erb$/,
-          loader: './index',
-          options: defaults({}, config, {
-            dependenciesRoot: './test/dependencies',
-            timeoutMs: 2000
-          })
-        }
-      ]
-    },
-    output: {
-      filename: './output.js'
-    }
-  })
-  compiler.outputFileSystem = fs
-  compiler.run(callback)
-}
+var compiler = require('./compiler')
 
 function compile2 (config, done, successCallback) {
-  compile(config, function (error, stats) {
+  compiler.compile(config, function (error, stats) {
     if (error) {
       fail(error)
       done()
@@ -42,13 +11,8 @@ function compile2 (config, done, successCallback) {
   })
 }
 
-function readOutput () {
-  var fileContent = fs.readFileSync(path.resolve(__dirname, './output.js'))
-  return fileContent.toString()
-}
-
 function expectInOutput (str) {
-  expect(readOutput()).toEqual(expect.stringContaining(str))
+  expect(compiler.readOutput()).toEqual(expect.stringContaining(str))
 }
 
 test('loads a simple file', function (done) {
@@ -92,7 +56,7 @@ test('loads through a Rails-like runner', function (done) {
 })
 
 test('loads with env specified in option', function (done) {
-  compile2({ file: 'runner.js.erb', runner: './test/runner', env: {ENV: 'custom'} }, done, function (stats) {
+  compile2({ file: 'runner.js.erb', runner: './test/runner', env: { ENV: 'custom' } }, done, function (stats) {
     expect(stats.compilation.errors).toEqual([])
     expectInOutput("var env = 'custom'")
     done()
@@ -102,7 +66,7 @@ test('loads with env specified in option', function (done) {
 test('does not error with large files', function (done) {
   compile2({ file: 'giant.js.erb' }, done, function (stats) {
     expect(stats.compilation.errors).toEqual([])
-    expect(readOutput()).toMatch(/var bigData = 'a{204740}'/)
+    expect(compiler.readOutput()).toMatch(/var bigData = 'a{204740}'/)
     done()
   })
 })
