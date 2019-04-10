@@ -209,11 +209,7 @@ module.exports = function railsErbLoader (source, map) {
     setTimeoutMsFromTimeoutInPlace(config)
   }
 
-  // Dependencies are only useful in development, so don't bother searching the
-  // file for them otherwise.
-  var dependencies = process.env.NODE_ENV === 'development'
-    ? parseDependencies(source, config.dependenciesRoot)
-    : []
+  var dependencies = parseDependencies(source, config.dependenciesRoot)
 
   // Parse the runner string before passing it down to `transfromSource`
   var runner = parseRunner(config.runner)
