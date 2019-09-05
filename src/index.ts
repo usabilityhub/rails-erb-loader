@@ -223,10 +223,6 @@ function addDependencies(
 const railsErbLoader: loader.Loader = function(sourceStringOrBuffer, map) {
   const source = sourceStringOrBuffer.toString();
 
-  // Mark loader cacheable. Must be called explicitly in webpack 1.
-  // see: https://webpack.js.org/guides/migrating/#cacheable
-  this.cacheable();
-
   // Get options passed in the loader query, or use defaults.
   const config: Config = {
     dependenciesRoot: "app",
