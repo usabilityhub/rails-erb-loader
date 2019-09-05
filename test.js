@@ -1,7 +1,6 @@
 var MemoryFS = require('memory-fs')
 var path = require('path')
 var webpack = require('webpack')
-var defaults = require('lodash.defaults')
 
 var fs = new MemoryFS()
 
@@ -16,11 +15,11 @@ function compile (config, callback) {
         {
           test: /\.erb$/,
           loader: './lib/index',
-          options: defaults({}, config, {
+          options: Object.assign({
             dependenciesRoot: './test/dependencies',
             timeoutMs: 2000
-          })
-        }
+          }, config)
+        },
       ]
     },
     output: {
