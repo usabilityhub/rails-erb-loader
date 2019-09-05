@@ -15,7 +15,7 @@ function compile (config, callback) {
       loaders: [
         {
           test: /\.erb$/,
-          loader: './index',
+          loader: './lib/index',
           options: defaults({}, config, {
             dependenciesRoot: './test/dependencies',
             timeoutMs: 2000
