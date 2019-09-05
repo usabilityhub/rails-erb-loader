@@ -32,7 +32,7 @@ const ioDelimiter = "_" + "_RAILS_ERB_LOADER_DELIMETER__";
 const configCommentRegex = /\/\*\s*rails-erb-loader-([a-z-]*)\s*([\s\S]*?)\s*\*\//g;
 
 /* Absolute path to the Ruby script that does the ERB transformation. */
-const runnerPath = path.join(__dirname, "erb_transformer.rb");
+const runnerPath = path.join(__dirname, "..", "erb_transformer.rb");
 
 /* Takes a path and attaches `.rb` if it has no extension nor trailing slash. */
 function defaultFileExtension(dependency: string): string {
@@ -139,9 +139,8 @@ function transformSource(
       // Output is delimited to filter out unwanted warnings or other output
       // that we don't want in our files.
       const sourceRegex = new RegExp(ioDelimiter + "([\\s\\S]+)" + ioDelimiter);
-      const matches = Buffer.concat(dataBuffers)
-        .toString()
-        .match(sourceRegex);
+      const output = Buffer.concat(dataBuffers).toString()
+      const matches = output.match(sourceRegex);
       if (matches === null || matches.length === 0) {
         callback(new Error("Could not find transformed code"));
       } else {

@@ -117,24 +117,6 @@ test('times out with error (timeoutMs: 1000)', function (done) {
   })
 })
 
-test('times out with error (DEPRECATED timeout: 1)', function (done) {
-  compile2({ file: 'sleep.js.erb', timeout: 1, timeoutMs: null }, done, function (stats) {
-    expect(stats.compilation.errors[0].message).toMatch(
-      'rails-erb-loader took longer than the specified 1000ms timeout'
-    )
-    done()
-  })
-})
-
-test('fails when both timeout and timeoutMs are set', function (done) {
-  compile2({ file: 'sleep.js.erb', timeout: 1, timeoutMs: 1000 }, done, function (stats) {
-    expect(stats.compilation.errors[0].message).toMatch(
-      'TypeError: Both options `timeout` and `timeoutMs` were set'
-    )
-    done()
-  })
-})
-
 test.skip('loads single file dependencies in dev', function (done) {
   var prevEnv = process.env.NODE_ENV
   compile2({ file: 'dependencies.js.erb' }, done, function (stats) {
