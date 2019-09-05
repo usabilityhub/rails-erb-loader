@@ -2,7 +2,6 @@ import fs from "fs";
 import { spawn } from "child_process";
 import path from "path";
 import { getOptions } from "loader-utils";
-import defaults from "lodash.defaults";
 import { loader } from "webpack";
 import { RawSourceMap } from "../node_modules/@types/uglify-js/node_modules/source-map/source-map";
 
@@ -229,14 +228,14 @@ const railsErbLoader: loader.Loader = function(sourceStringOrBuffer, map) {
   this.cacheable();
 
   // Get options passed in the loader query, or use defaults.
-  // Modifying the return value of `getOptions` is not permitted.
-  const config: Config = defaults({}, getOptions(this) as Partial<Config>, {
+  const config: Config = {
     dependenciesRoot: "app",
     runner: "./bin/rails runner",
     engine: "erb" as const,
     env: process.env,
-    timeoutMs: 0
-  });
+    timeoutMs: 0,
+    ...getOptions(this)
+  };
 
   // Dependencies are only useful in development, so don't bother searching the
   // file for them otherwise.
