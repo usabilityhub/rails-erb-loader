@@ -2,13 +2,14 @@
   "name": "rails-erb-loader",
   "version": "5.5.2",
   "description": "Embedded Ruby (`.erb`) `webpack` loader for Ruby projects.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
-    "lint": "eslint index.js",
-    "test": "jest",
+    "build": "tsc",
+    "lint": "eslint src/index.ts",
+    "test": "npm run build && jest",
     "test-webpack-2": "npm install webpack@2 --save-dev && jest",
     "test-webpack-3": "npm install webpack@3 --save-dev && jest"
   },
@@ -44,19 +45,24 @@
   "homepage": "https://github.com/usabilityhub/rails-erb-loader#readme",
   "dependencies": {
     "loader-utils": "^1.1.0",
-    "lodash.defaults": "^4.2.0"
+    "typescript": "^3.6.2"
   },
   "peerDependencies": {
     "webpack": "^2.0.0 || >= 3.0.0-rc.0 || ^3.0.0"
   },
   "devDependencies": {
-    "eslint": "^3.11.1",
-    "eslint-config-standard": "^6.2.1",
-    "eslint-plugin-node": "^3.0.5",
-    "eslint-plugin-promise": "^3.3.0",
-    "eslint-plugin-standard": "^2.0.1",
-    "jest": "^20.0.4",
+    "@types/loader-utils": "^1.1.3",
+    "@types/node": "^12.7.4",
+    "@types/source-map": "^0.5.7",
+    "@types/webpack": "^4.39.1",
+    "@typescript-eslint/eslint-plugin": "^2.1.0",
+    "@typescript-eslint/parser": "^2.1.0",
+    "eslint": "^6.3.0",
+    "eslint-config-prettier": "^6.2.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.9.0",
     "memory-fs": "^0.4.1",
+    "prettier": "^1.18.2",
     "webpack": "^3.0.0"
   }
 }

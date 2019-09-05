@@ -1,7 +1,6 @@
 var MemoryFS = require('memory-fs')
 var path = require('path')
 var webpack = require('webpack')
-var defaults = require('lodash.defaults')
 
 var fs = new MemoryFS()
 
@@ -15,12 +14,12 @@ function compile (config, callback) {
       loaders: [
         {
           test: /\.erb$/,
-          loader: './index',
-          options: defaults({}, config, {
+          loader: './lib/index',
+          options: Object.assign({
             dependenciesRoot: './test/dependencies',
             timeoutMs: 2000
-          })
-        }
+          }, config)
+        },
       ]
     },
     output: {
@@ -112,24 +111,6 @@ test('times out with error (timeoutMs: 1000)', function (done) {
     expect(stats.compilation.errors.length).toEqual(1)
     expect(stats.compilation.errors[0].message).toMatch(
       'rails-erb-loader took longer than the specified 1000ms timeout'
-    )
-    done()
-  })
-})
-
-test('times out with error (DEPRECATED timeout: 1)', function (done) {
-  compile2({ file: 'sleep.js.erb', timeout: 1, timeoutMs: null }, done, function (stats) {
-    expect(stats.compilation.errors[0].message).toMatch(
-      'rails-erb-loader took longer than the specified 1000ms timeout'
-    )
-    done()
-  })
-})
-
-test('fails when both timeout and timeoutMs are set', function (done) {
-  compile2({ file: 'sleep.js.erb', timeout: 1, timeoutMs: 1000 }, done, function (stats) {
-    expect(stats.compilation.errors[0].message).toMatch(
-      'TypeError: Both options `timeout` and `timeoutMs` were set'
     )
     done()
   })
