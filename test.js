@@ -94,7 +94,6 @@ test('fails when both timeout and timeoutMs are set', function (done) {
   // TODO this spec is causing jest not to clean up properly, we get a console warning
   // 'Jest did not exit one second after the test run has completed.'
   compile2({ file: 'sleep.js.erb', timeout: 1, timeoutMs: 1000 }, done, function (stats) {
-    console.log(stats.compilation.errors)
     expect(stats.compilation.errors[0].message).toMatch(
       'TypeError: Both options `timeout` and `timeoutMs` were set'
     )
