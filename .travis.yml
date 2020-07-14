@@ -9,10 +9,13 @@ cache:
 node_js:
   # LTS version(s)
   - "8"
+  - "10"
+  - "12"
 env:
   matrix:
   - TRAVIS_WEBPACK_VERSION="2"
   - TRAVIS_WEBPACK_VERSION="3"
+  - TRAVIS_WEBPACK_VERSION="4"
 matrix:
   fast_finish: true
 install:
