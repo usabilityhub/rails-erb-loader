@@ -91,6 +91,7 @@ function transformSource (runner, config, source, map, callback) {
 
   var dataBuffers = []
   child.stdout.on('data', function (data) {
+    if (config.debug) { console.log(data) }
     dataBuffers.push(data)
   })
 
@@ -202,7 +203,8 @@ module.exports = function railsErbLoader (source, map) {
     dependenciesRoot: 'app',
     runner: './bin/rails runner',
     engine: 'erb',
-    env: process.env
+    env: process.env,
+    debug: false
   })
 
   if (config.timeout !== undefined) {
