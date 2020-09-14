@@ -90,8 +90,8 @@ export default function UserFormFields() {
 ```
 
 ### Spring
-In case you use gem spring
-You might need customization on the loader
+In case you use gem `spring`  
+You might need customization on the loader  
 
 Example from [a reply in #47](https://github.com/usabilityhub/rails-erb-loader/issues/47#issuecomment-434138107)
 ```js
