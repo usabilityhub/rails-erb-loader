@@ -99,15 +99,15 @@ Example from [a reply in #47](https://github.com/usabilityhub/rails-erb-loader/i
 /* global process:false */
 
 module.exports = {
-  test:     /\.erb$/,
-  enforce:  "pre",
-  exclude:  /node_modules/,
+  test: /\.erb$/,
+  enforce: "pre",
+  exclude: /node_modules/,
 
   use: [{
-    loader:   "rails-erb-loader",
-    options:  {
-      runner:     (/^win/.test(process.platform) ? "ruby " : "") + "bin/rails runner",
-      env:        {
+    loader: "rails-erb-loader",
+    options: {
+      runner: (/^win/.test(process.platform) ? "ruby " : "") + "bin/rails runner",
+      env: {
         ...process.env,
         DISABLE_SPRING: 1,
       },
