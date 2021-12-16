@@ -156,7 +156,7 @@ Also supports building without Rails:
 
 ### Dependencies
 
-If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Inclusion of the `rails-erb-loader-dependency` (or `-dependencies`) comment will tell webpack to watch these files - causing webpack-dev-server to rebuild when they are changed.
+If your `.erb` files depend on files in your Ruby project, you can list them explicitly. Inclusion of `rails-erb-loader-dependency` (or `-dependencies`) in a javascript comment block will tell webpack to watch these files - causing webpack-dev-server to rebuild when they are changed. If you don't want the directive to end up in the result, include the javascript comment block inside an erb comment block. 
 
 #### Watch individual files
 
