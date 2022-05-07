@@ -41,15 +41,14 @@ Add `rails-erb-loader` to your rules.
 // webpack.config.js
 
 module.exports = {
-    module: {
-      rules: [
-        {
-          test: /\.erb$/,
-          enforce: 'pre',
-          loader: 'rails-erb-loader'
-        },
-      ]
-    }
+  module: {
+    rules: [
+      {
+        test: /\.erb$/,
+        enforce: "pre",
+        loader: "rails-erb-loader"
+      }
+    ]
   }
 };
 ```
