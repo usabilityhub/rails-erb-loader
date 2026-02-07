@@ -79,7 +79,7 @@ function transformSource (runner, config, source, map, callback) {
   var child = spawn(
     runner.file,
     runner.arguments.concat(
-      runnerPath,
+      `"${runnerPath}"`,
       ioDelimiter,
       config.engine
     ),
