@@ -47,7 +47,7 @@ function parseDependenciesList (root, string) {
 /* Update config object in place with comments from file */
 function parseDependencies (source, root) {
   var dependencies = []
-  var match = null
+  var match
   while ((match = configCommentRegex.exec(source))) {
     var option = match[1]
     var value = match[2]

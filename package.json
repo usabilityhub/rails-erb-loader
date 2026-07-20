@@ -14,7 +14,8 @@
     "test": "jest",
     "test-webpack-2": "npm install webpack@2 --no-save && jest",
     "test-webpack-3": "npm install webpack@3 --no-save && jest",
-    "test-webpack-4": "npm install webpack@4 --no-save && jest"
+    "test-webpack-4": "npm install webpack@4 --no-save && jest",
+    "test-webpack-5": "npm install webpack@4 --no-save && jest"
   },
   "repository": {
     "type": "git",
@@ -51,17 +52,27 @@
     "lodash.defaults": "^4.2.0"
   },
   "peerDependencies": {
-    "webpack": "^2.0.0 || ^3.0.0 || ^4.0.0"
+    "webpack": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0"
   },
   "devDependencies": {
-    "eslint": "^9.32.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-node": "^8.0.1",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "jest": "^29.3.1",
-    "memory-fs": "^0.4.1",
-    "webpack": "^5.75.0"
+    "@eslint/compat": "^2.1.0",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.7.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-import-x": "^4.17.1",
+    "eslint-plugin-n": "^18.2.2",
+    "eslint-plugin-promise": "^7.3.0",
+    "jest": "^30.4.2",
+    "memory-fs": "^0.5.0",
+    "neostandard": "^0.13.0",
+    "webpack": "^5.108.4"
+  },
+  "overrides": {
+    "eslint-plugin-import": {
+      "eslint": "$eslint"
+    },
+    "neostandard": {
+      "eslint": "$eslint"
+    }
   }
 }
