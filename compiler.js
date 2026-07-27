@@ -4,6 +4,7 @@ var defaults = require('lodash.defaults')
 var path = require('path')
 
 var isWebpack4 = webpack.version && webpack.version.slice(0, 1) === '4'
+var isWebpack5 = webpack.version && webpack.version.slice(0, 1) === '5'
 
 function webpack3Compiler (config) {
   return webpack({
@@ -49,7 +50,30 @@ function webpack4Compiler (config) {
   })
 }
 
-var webpackCompiler = isWebpack4 ? webpack4Compiler : webpack3Compiler
+function webpack5Compiler (config) {
+  return webpack({
+    entry: './test/erb/' + config.file,
+    mode: 'development',
+    module: {
+      rules: [
+        {
+          test: /\.erb$/,
+          loader: './index',
+          options: defaults({}, config, {
+            dependenciesRoot: './test/dependencies',
+            timeoutMs: 2000
+          })
+        }
+      ]
+    },
+    output: {
+      path: __dirname,
+      filename: 'output.js'
+    }
+  })
+}
+
+var webpackCompiler = isWebpack5 ? webpack5Compiler : isWebpack4 ? webpack4Compiler : webpack3Compiler
 
 var fs = new MemoryFS()
 
