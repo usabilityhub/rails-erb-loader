@@ -127,3 +127,8 @@ test.skip('loads directory dependencies in dev', function (done) {
   })
   process.env.NODE_ENV = prevEnv
 })
+
+afterAll(async () => {
+  // avoid jest open handle error
+  await new Promise(resolve => setTimeout(() => resolve(''), 1000))
+})
