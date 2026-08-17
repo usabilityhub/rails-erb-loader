@@ -73,6 +73,9 @@
     },
     "neostandard": {
       "eslint": "$eslint"
+    },
+    "@istanbuljs/load-nyc-config": {
+      "js-yaml": "^3.15.1"
     }
   }
 }
