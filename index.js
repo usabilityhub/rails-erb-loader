@@ -30,15 +30,25 @@ function parseRunner (runner) {
   var runnerArguments = runner.split(' ')
   var runnerFile = runnerArguments.shift()
 
+  if (!/^[a-zA-Z0-9./_-]+$/.test(runnerFile)) {
+    throw new Error(
+      'rails-erb-loader: Invalid runner "' + runnerFile + '". ' +
+      'Runner must only contain alphanumeric characters, dots, slashes, hyphens, and underscores.'
+    )
+  }
+
   return { file: runnerFile, arguments: runnerArguments }
 }
 
 /* Get each space separated path, ignoring any empty strings. */
 function parseDependenciesList (root, string) {
+  var resolvedRoot = path.resolve(root)
   return string.split(/\s+/).reduce(function (accumulator, dependency) {
     if (dependency.length > 0) {
-      var absolutePath = path.resolve(root, defaultFileExtension(dependency))
-      accumulator.push(absolutePath)
+      var absolutePath = path.resolve(resolvedRoot, defaultFileExtension(dependency))
+      if (absolutePath.indexOf(resolvedRoot + path.sep) === 0 || absolutePath === resolvedRoot) {
+        accumulator.push(absolutePath)
+      }
     }
     return accumulator
   }, [])
