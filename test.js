@@ -1,5 +1,8 @@
 var compiler = require('./compiler')
 
+// Double of the default 5 seconds since timeout happens too often in CI
+const timeoutMs = 10000
+
 function compile2 (config, done, successCallback) {
   compiler.compile(config, function (error, stats) {
     if (error) {
@@ -21,7 +24,7 @@ test('loads a simple file', function (done) {
     expectInOutput("var helloWorld = 'Hello World'")
     done()
   })
-})
+}, timeoutMs)
 
 test('loads with erb', function (done) {
   compile2({ file: 'engine.js.erb', engine: 'erb' }, done, function (stats) {
@@ -29,7 +32,7 @@ test('loads with erb', function (done) {
     expectInOutput("var engine = 'erb'")
     done()
   })
-})
+}, timeoutMs)
 
 test('loads with erubis', function (done) {
   compile2({ file: 'engine.js.erb', engine: 'erubis' }, done, function (stats) {
@@ -37,7 +40,7 @@ test('loads with erubis', function (done) {
     expectInOutput("var engine = 'erubis'")
     done()
   })
-})
+}, timeoutMs)
 
 test('loads with erubi', function (done) {
   compile2({ file: 'engine.js.erb', engine: 'erubi' }, done, function (stats) {
@@ -45,7 +48,7 @@ test('loads with erubi', function (done) {
     expectInOutput("var engine = 'erubi'")
     done()
   })
-})
+}, timeoutMs)
 
 test('loads through a Rails-like runner', function (done) {
   compile2({ file: 'runner.js.erb', runner: './test/runner' }, done, function (stats) {
@@ -53,7 +56,7 @@ test('loads through a Rails-like runner', function (done) {
     expectInOutput("var env = 'test'")
     done()
   })
-})
+}, timeoutMs)
 
 test('loads with env specified in option', function (done) {
   compile2({ file: 'runner.js.erb', runner: './test/runner', env: { ENV: 'custom' } }, done, function (stats) {
@@ -61,7 +64,7 @@ test('loads with env specified in option', function (done) {
     expectInOutput("var env = 'custom'")
     done()
   })
-})
+}, timeoutMs)
 
 test('does not error with large files', function (done) {
   compile2({ file: 'giant.js.erb' }, done, function (stats) {
@@ -69,7 +72,7 @@ test('does not error with large files', function (done) {
     expect(compiler.readOutput()).toMatch(/var bigData = 'a{204740}'/)
     done()
   })
-})
+}, timeoutMs)
 
 test('times out with error (timeoutMs: 1000)', function (done) {
   compile2({ file: 'sleep.js.erb', timeoutMs: 1000 }, done, function (stats) {
@@ -79,7 +82,7 @@ test('times out with error (timeoutMs: 1000)', function (done) {
     )
     done()
   })
-})
+}, timeoutMs)
 
 test('times out with error (DEPRECATED timeout: 1)', function (done) {
   compile2({ file: 'sleep.js.erb', timeout: 1, timeoutMs: null }, done, function (stats) {
@@ -88,7 +91,7 @@ test('times out with error (DEPRECATED timeout: 1)', function (done) {
     )
     done()
   })
-})
+}, timeoutMs)
 
 test('fails when both timeout and timeoutMs are set', function (done) {
   // TODO this spec is causing jest not to clean up properly, we get a console warning
@@ -126,7 +129,7 @@ test.skip('loads directory dependencies in dev', function (done) {
     done()
   })
   process.env.NODE_ENV = prevEnv
-})
+}, timeoutMs)
 
 afterAll(async () => {
   // avoid jest open handle error
