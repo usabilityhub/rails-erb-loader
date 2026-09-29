@@ -7,6 +7,9 @@ jobs:
     name: Test Plugin
 
     strategy:
+      # Due to timeout randomly happening in different versions
+      # This help prevent other jobs from being canceled due to those timeouts
+      fail-fast: false
       matrix:
         node-version: [24.x]
         ruby:
