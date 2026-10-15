@@ -59,7 +59,7 @@ test('loads through a Rails-like runner', function (done) {
 }, timeoutMs)
 
 test('loads with env specified in option', function (done) {
-  compile2({ file: 'runner.js.erb', runner: './test/runner', env: { ENV: 'custom' } }, done, function (stats) {
+  compile2({ file: 'runner.js.erb', runner: './test/runner', env: { ENV: 'custom' }, timeoutMs, }, done, function (stats) {
     expect(stats.compilation.errors).toEqual([])
     expectInOutput("var env = 'custom'")
     done()
